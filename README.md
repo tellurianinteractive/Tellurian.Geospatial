@@ -18,3 +18,12 @@ Methods for transforming between cartesian and planar coordinates.
 ## Namespace *Tellurian.Geospatial.DistanceCalculators*
 The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding for example precision and speed. This **DistanceCalculator** is included:
 * **HaversineDistanceCalculator**
+
+## References
+This implementation uses part of *Latitude/longitude spherical geodesy tools* 
+MIT Licence (c) Chris Veness 2002-2019
+https://www.movable-type.co.uk/scripts/latlong.html 
+https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html 
+
+Implementation of the **GaussKrügerTransformer** is based on formulas from Swedish Land Survey (Lantmäteriet)
+https://www.lantmateriet.se/sv/Kartor-och-geografisk-information/GPS-och-geodetisk-matning/Om-geodesi/Formelsamling/
