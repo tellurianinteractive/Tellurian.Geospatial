@@ -1,5 +1,6 @@
 # Tellurian.Geospatial
-Strongly typed object model for geospatial calculations and transformations.
+Strongly typed object model for geospatial calculations and transformations.  
+Released under MIT license 2019.
 ## Namespace *Tellurian.Geospatial*
 Types for basic calculations of dictances etc. and building blocks for more advanced spatial algorithms.
 * **Angle** represening 0 <= *degrees* < 360 and radians 0 <= *radians* < 2Π.
