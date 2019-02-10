@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.329
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tellurian.Geospatial", "Tellurian.Geospatial\Tellurian.Geospatial.csproj", "{A42AA59D-B4B5-4268-8811-07EEACBFBAA4}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tellurian.Geospatial.Tests", "Tellurian.Geospatial.Tests\Tellurian.Geospatial.Tests.csproj", "{BDF30BD5-C8C3-4FD3-ABE9-68FE5587AD70}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A42AA59D-B4B5-4268-8811-07EEACBFBAA4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A42AA59D-B4B5-4268-8811-07EEACBFBAA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A42AA59D-B4B5-4268-8811-07EEACBFBAA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A42AA59D-B4B5-4268-8811-07EEACBFBAA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDF30BD5-C8C3-4FD3-ABE9-68FE5587AD70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDF30BD5-C8C3-4FD3-ABE9-68FE5587AD70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDF30BD5-C8C3-4FD3-ABE9-68FE5587AD70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDF30BD5-C8C3-4FD3-ABE9-68FE5587AD70}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5A3D6C67-5DF7-4C4D-83C7-35CE629AF18B}
+	EndGlobalSection
+EndGlobal
