@@ -17,7 +17,7 @@ Methods for transforming between cartesian and planar coordinates.
 
 ## Namespace *Tellurian.Geospatial.DistanceCalculators*
 The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding for example precision and speed. This **DistanceCalculator** is included:
-* **HaversineDistanceCalculator**
+* **HaversineDistanceCalculator** is a fast calculation that is suitable for distances down to decimeters.
 
 ## References
 This implementation uses part of *Latitude/longitude spherical geodesy tools* 
