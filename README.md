@@ -14,7 +14,7 @@ Each of these objects has value safe initializers and useful methods for calcula
 ## Namespace *Tellurian.Geospatial.Transform*
 Types and methods for transforming between cartesian and planar coordinates.
 * **EarthEllipsoid** represents the form of the earth. There are a few preconfigured earth ellipsiods: *Grs80* and *Wgs84*. You can easy create other.
-* **MapProjection** represents how coordinates are mapped to the earth.  There are a few preconfigured: *Utm32-35*, and specifi for Sweden: *Sweref99TM* and *Rt90*.
+* **MapProjection** represents how coordinates are mapped to the earth.  There are a few preconfigured: *Utm32-35*, and specific for Sweden: *Sweref99TM* and *Rt90*.
 * **GridCoordinate** represents a planar coordinate.
 * **GaussKrügerTransformer** uses the objects above to transform between cartesian and planar coordinates.
 
