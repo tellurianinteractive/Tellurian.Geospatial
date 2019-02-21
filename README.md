@@ -19,8 +19,8 @@ Types and methods for transforming between cartesian and planar coordinates.
 * **GaussKrügerTransformer** uses the objects above to transform between cartesian and planar coordinates.
 
 ## Namespace *Tellurian.Geospatial.DistanceCalculators*
-The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding for example precision and speed of calculation. The followimg **DistanceCalculator** is included:
-* **HaversineDistanceCalculator** is a fast calculation that is suitable for distances down to decimeters, suitable for tracking of movable objects.
+The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding  precision and speed of calculation. The following **DistanceCalculator** is included:
+* **HaversineDistanceCalculator** is a fast calculation that is suitable for distances down to decimeters, suitable for tracking of movable objects. This is also the default **DistanceCalculator**.
 
 ## References
 This implementation uses part of *Latitude/longitude spherical geodesy tools*  
