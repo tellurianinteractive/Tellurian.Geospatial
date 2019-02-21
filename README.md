@@ -5,7 +5,7 @@ Released under MIT license 2019.
 Types for basic calculations of dictances etc. and building blocks for more advanced spatial algorithms.
 * **Angle** represening 0 <= *degrees* < 360 and radians 0 <= *radians* < 2Π.
 * **Distance** reprenting zero or positive distances in meters and kilometers.
-* **Position** with **Latitude** and **Longitude** representing a two dimensional location on earth surface. The user must decide on which datum a position is expressed, for exampe WGS 84, ETRS 98 or other. 
+* **Position** with **Latitude** and **Longitude** representing a two dimensional location on earth surface. The user must decide on which datum a position is expressed, for exampe WGS 84, ETRS 89 or similar. 
 * **Speed** representing a zero or positive speed in m/s and km/h.
 * **Stretch** between two **Position**s representing propertes for stretches on earth surface, ie. *distance*, *direction*, *on track distance* etc.
 
@@ -19,8 +19,8 @@ Types and methods for transforming between cartesian and planar coordinates.
 * **GaussKrügerTransformer** uses the objects above to transform between cartesian and planar coordinates.
 
 ## Namespace *Tellurian.Geospatial.DistanceCalculators*
-The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding for example precision and speed. This **DistanceCalculator** is included:
-* **HaversineDistanceCalculator** is a fast calculation that is suitable for distances down to decimeters.
+The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding for example precision and speed of calculation. The followimg **DistanceCalculator** is included:
+* **HaversineDistanceCalculator** is a fast calculation that is suitable for distances down to decimeters, suitable for tracking of movable objects.
 
 ## References
 This implementation uses part of *Latitude/longitude spherical geodesy tools*  
