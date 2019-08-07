@@ -6,13 +6,9 @@
     /// <remarks>
     /// References: https://en.wikipedia.org/wiki/Earth_ellipsoid
     /// </remarks>
-    public sealed class EarthEllipsoid
+    public struct EarthEllipsoid
     {
-        public static EarthEllipsoid CreateFromSemiAxes(double semiMajorAxis, double semiMinorAxis)
-        {
-            return new EarthEllipsoid(semiMajorAxis, semiMinorAxis);
-        }
-
+        public static EarthEllipsoid CreateFromSemiAxes(double semiMajorAxis, double semiMinorAxis) => new EarthEllipsoid(semiMajorAxis, semiMinorAxis);
         public static EarthEllipsoid CreateFromSemiMajorAxisAndFlattening(double semiMajorAxis, double flattening)
         {
             var semiMinorAxis = semiMajorAxis - flattening * semiMajorAxis;

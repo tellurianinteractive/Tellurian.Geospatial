@@ -1,6 +1,6 @@
 ﻿namespace Tellurian.Geospatial.Transformation
 {
-    public sealed class MapProjection
+    public struct MapProjection
     {
         public MapProjection(EarthEllipsoid ellipsoid, double centralMeridian, double scale, double falseNorthing, double falseEasting)
         {
@@ -13,7 +13,7 @@
 
         public EarthEllipsoid Ellipsoid { get; }
         public double CentralMeridian { get; }
-        public double Scale { get; } = 1.0;
+        public double Scale { get; }
         public double FalseNorthing { get; }
         public double FalseEasting { get; }
     }

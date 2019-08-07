@@ -43,6 +43,14 @@ namespace Tellurian.Geospatial.Tests
         }
 
         [TestMethod]
+        public void SerializationAndDeserializationWorks()
+        {
+            var target = Latitude.FromDegrees(89.5);
+            var actual = SerializationTester<Latitude>.SerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
         public void Operators()
         {
             Assert.IsTrue(Latitude.FromDegrees(1) == Latitude.FromDegrees(1));

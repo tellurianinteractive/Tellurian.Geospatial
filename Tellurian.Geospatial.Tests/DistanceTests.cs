@@ -59,6 +59,14 @@ namespace Tellurian.Geospatial.Tests
         }
 
         [TestMethod]
+        public void SerializationAndDeserializationWorks()
+        {
+            var target = Distance.FromMeters(1.5);
+            var actual = SerializationTester<Distance>.SerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
         public void ToStringWorks()
         {
             var target = Distance.FromMeters(1);

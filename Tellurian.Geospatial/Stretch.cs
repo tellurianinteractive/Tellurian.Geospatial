@@ -17,7 +17,7 @@ namespace Tellurian.Geospatial
     /// https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html 
     /// </remarks>
     [DataContract]
-    public sealed class Stretch
+    public struct Stretch : IEquatable<Stretch>
     {
         private static readonly IDistanceCalculator DefaultDistanceCalculator = new HaversineDistanceCalculator();
 
@@ -27,34 +27,34 @@ namespace Tellurian.Geospatial
         private readonly Position _To;
 
         private readonly IDistanceCalculator _DistanceCalculator;
-        private readonly Lazy<Distance> _Distance;
-        private readonly Lazy<Angle> _InitialBearing;
-        private readonly Lazy<Angle> _FinalBearing;
-        private readonly Lazy<Angle> _Direction;
+        private Distance? _Distance;
+        private Angle? _InitialBearing;
+        private Angle? _FinalBearing;
+        private Angle? _Direction;
 
-        public static Stretch Between(Position from, Position to) => new Stretch(from, to);
-        public static Stretch Between(Position from, Position to, IDistanceCalculator distanceCalculator) => new Stretch(from, to, distanceCalculator);
+        public static Stretch Between(in Position from, in Position to) => new Stretch(from, to);
+        public static Stretch Between(in Position from, in Position to, in IDistanceCalculator distanceCalculator) => new Stretch(from, to, distanceCalculator);
 
-        private Stretch(Position from, Position to) : this(from, to, DefaultDistanceCalculator) { }
+        private Stretch(in Position from, in Position to) : this(from, to, DefaultDistanceCalculator) { }
 
-        private Stretch(Position from, Position to, IDistanceCalculator distanceCalculator)
+        private Stretch(in Position from, in Position to, in IDistanceCalculator distanceCalculator)
         {
             _From = from;
             _To = to;
             _DistanceCalculator = distanceCalculator ?? DefaultDistanceCalculator;
-            _Distance = new Lazy<Distance>(() => _DistanceCalculator.GetDistance(from, to));
-            _Direction = new Lazy<Angle>(() => RhumbBearing());
-            _InitialBearing = new Lazy<Angle>(() => GetInitialBearing());
-            _FinalBearing = new Lazy<Angle>(() => Angle.FromDegrees((Inverse.InitialBearing.Degrees + 180) % 360));
+            _Direction = null;
+            _Distance = null;
+            _InitialBearing = null;
+            _FinalBearing = null;
         }
 
         public bool IsZero => From == To;
-        public Angle Direction => _Direction.Value;
-        public Angle InitialBearing => _InitialBearing.Value;
-        public Angle FinalBearing => _FinalBearing.Value;
+        public Angle Direction { get { if (!_Direction.HasValue) _Direction = RhumbBearing(); return _Direction.Value; } }
+        public Angle InitialBearing { get { if (!_InitialBearing.HasValue) _InitialBearing = GetInitialBearing(); return _InitialBearing.Value; } }
+        public Angle FinalBearing { get { if (!_FinalBearing.HasValue) _FinalBearing = Angle.FromDegrees((Inverse.InitialBearing.Degrees + 180) % 360); return _FinalBearing.Value; } }
         public Position From => _From;
         public Position To => _To;
-        public Distance Distance => _Distance.Value;
+        public Distance Distance { get { if (!_Distance.HasValue) _Distance = _DistanceCalculator.GetDistance(From, To); return _Distance.Value; } }
         public Stretch Inverse => new Stretch(_To, _From);
         public bool IsEastWestLine => _From.Latitude.Equals(_To.Latitude);
 
@@ -126,29 +126,13 @@ namespace Tellurian.Geospatial
             return Angle.FromRadians((b + PI2) % PI2);
         }
 
-        public override bool Equals(object obj)
-        {
-            var other = obj as Stretch;
-            if (other is null) return false;
-            return From == other.From && To == other.To;
-        }
+        public override bool Equals(object obj) => obj is Stretch && Equals((Stretch) obj);
+        public bool Equals(Stretch other) => From.Equals(other.From) && To.Equals(other.To);
 
-        public static bool operator ==(Stretch value1, Stretch value2)
-        {
-            if (value1 is null || value2 is null) return false;
-            return value1.Equals(value2);
-        }
-
-        public static bool operator !=(Stretch value1, Stretch value2)
-        {
-            if (value1 is null || value2 is null) return true;
-            return !value1.Equals(value2);
-        }
+        public static bool operator ==(in Stretch value1, in Stretch value2) => value1.Equals(value2);
+        public static bool operator !=(in Stretch value1, in Stretch value2) => !value1.Equals(value2);
 
         [ExcludeFromCodeCoverage]
-        public override int GetHashCode()
-        {
-            return From.GetHashCode();
-        }
+        public override int GetHashCode() => From.GetHashCode();
     }
 }

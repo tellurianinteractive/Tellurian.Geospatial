@@ -54,6 +54,14 @@ namespace Tellurian.Geospatial.Tests
         }
 
         [TestMethod]
+        public void SerializationAndDeserializationWorks()
+        {
+            var target = Stretch.Between(Position.FromDegrees(58.1, 11.9),Position.FromDegrees(59.1, 12.9));
+            var actual = SerializationTester<Stretch>.SerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
         public void Operators()
         {
             Assert.IsTrue(Stretch.Between(TestData.Stockholm, TestData.Wellington) == Stretch.Between(TestData.Stockholm, TestData.Wellington));

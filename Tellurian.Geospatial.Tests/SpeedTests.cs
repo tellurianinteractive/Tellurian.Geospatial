@@ -21,6 +21,14 @@ namespace Tellurian.Geospatial.Tests
         }
 
         [TestMethod]
+        public void SerializationAndDeserializationWorks()
+        {
+            var target = Speed.FromKilometersPerHour(89.5);
+            var actual = SerializationTester<Speed>.SerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
         public void Operators()
         {
             Assert.IsTrue(Speed.FromKilometersPerHour(36) == Speed.FromMetersPerSecond(10));
