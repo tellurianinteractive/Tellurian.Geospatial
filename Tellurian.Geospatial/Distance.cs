@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Tellurian.Geospatial
 {
     [DataContract]
-    public struct Distance : IEquatable<Distance>
+    public struct Distance : IEquatable<Distance>, IComparable<Distance>
     {
         const double CompareTolerance = 0.001;
 
@@ -30,10 +30,10 @@ namespace Tellurian.Geospatial
 
         public static bool operator == (in Distance one, in Distance another) => one.Equals(another); 
         public static bool operator !=(in Distance one, in Distance another) => ! one.Equals(another); 
-        public static bool operator >(in Distance one, in Distance another) => one.Meters > another.Meters;  
-        public static bool operator >=(in Distance one, in Distance another) => one.Meters >= another.Meters; 
-        public static bool operator <(in Distance one, in Distance another) => one.Meters < another.Meters; 
-        public static bool operator <=(in Distance one, in Distance another) => one.Meters <= another.Meters; 
+        public static bool operator >(in Distance one, in Distance another) => one.CompareTo(another) == 1;  
+        public static bool operator >=(in Distance one, in Distance another) => one.CompareTo(another) >= 0; 
+        public static bool operator <(in Distance one, in Distance another) => one.CompareTo(another) == -1; 
+        public static bool operator <=(in Distance one, in Distance another) => one.CompareTo(another) <= 0; 
 
         public bool Equals(Distance other) => Math.Abs(other.Meters - Meters) < CompareTolerance;
         public override bool Equals(object obj)
@@ -45,5 +45,6 @@ namespace Tellurian.Geospatial
         public override string ToString() => string.Format(CultureInfo.InvariantCulture, "{0}m", Meters);
         [ExcludeFromCodeCoverage]
         public override int GetHashCode() => Meters.GetHashCode();
+        public int CompareTo(Distance other) => Equals(other) ? 0 : Meters.CompareTo(other.Meters);
     }
 }

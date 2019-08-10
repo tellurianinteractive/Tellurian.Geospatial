@@ -13,7 +13,7 @@ namespace Tellurian.Geospatial.Transformation
     /// </remarks>
     public static class GaussKreugerTransformer
     {
-        public static GridCoordinate ToGridCoordinate(Position geodeticPosition, MapProjection  projection)
+        public static GridCoordinate ToGridCoordinate(in Position geodeticPosition, in MapProjection  projection)
         {
             var axis = projection.Ellipsoid.SemiMajorAxis;
             var centralMeridian = projection.CentralMeridian;
@@ -62,7 +62,7 @@ namespace Tellurian.Geospatial.Transformation
             return new GridCoordinate(Round(x, 3), Round(y, 3));
         }
 
-        public static Position ToPosition(GridCoordinate gridCoordinate, MapProjection projection)
+        public static Position ToPosition(in GridCoordinate gridCoordinate, in MapProjection projection)
         {
             var axis = projection.Ellipsoid.SemiMajorAxis;
             var centralMeridian = projection.CentralMeridian;

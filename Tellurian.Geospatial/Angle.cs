@@ -19,7 +19,7 @@ namespace Tellurian.Geospatial
 
         Angle(in double degrees, Func<double, bool> validate)
         {
-            if (!validate.Invoke(degrees)) throw new ArgumentOutOfRangeException(nameof(degrees));
+            if (!validate(degrees)) throw new ArgumentOutOfRangeException(nameof(degrees));
             _Degrees = degrees;
         }
 

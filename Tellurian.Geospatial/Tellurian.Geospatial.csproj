@@ -7,8 +7,8 @@
     <Company>Tellurian</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Object model for geospatial calculations and transformations.</Description>
-    <Version>1.0.0</Version>
-    <PackageReleaseNotes>1.0.0: First production version.</PackageReleaseNotes>
+    <Version>1.1.0</Version>
+    <PackageReleaseNotes>1.1.0: First production version.</PackageReleaseNotes>
     <Copyright>Stefan Fjällemark</Copyright>
     <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
     <RepositoryUrl>https://github.com/fjallemark/Tellurian.Geospatial</RepositoryUrl>

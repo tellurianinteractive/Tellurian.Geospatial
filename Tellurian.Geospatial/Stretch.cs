@@ -23,7 +23,7 @@ namespace Tellurian.Geospatial
 
         [DataMember(Name = "From", IsRequired = true, Order = 1)]
         private readonly Position _From;
-        [DataMember(Name = "To", IsRequired = true, Order = 1)]
+        [DataMember(Name = "To", IsRequired = true, Order = 2)]
         private readonly Position _To;
 
         private readonly IDistanceCalculator _DistanceCalculator;

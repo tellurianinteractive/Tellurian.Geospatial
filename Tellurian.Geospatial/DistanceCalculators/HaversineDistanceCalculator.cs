@@ -22,9 +22,9 @@ namespace Tellurian.Geospatial.DistanceCalculators
             var lon1 = from.Longitude.Radians;
             var lat2 = to.Latitude.Radians;
             var lon2 = to.Longitude.Radians;
-            var dLat = lat2 - lat1;
-            var dLon = lon2 - lon1;
-            var a = Sin(dLat / 2) * Sin(dLat / 2) + Cos(lat1) * Cos(lat2) * Sin(dLon / 2) * Sin(dLon / 2);
+            var ΔLat = lat2 - lat1;
+            var ΔLon = lon2 - lon1;
+            var a = Sin(ΔLat / 2) * Sin(ΔLat / 2) + Cos(lat1) * Cos(lat2) * Sin(ΔLon / 2) * Sin(ΔLon / 2);
             var c = 2 * Atan2(Sqrt(a), Sqrt(1 - a));
             return Distance.FromMeters(r * c);
         }

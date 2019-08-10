@@ -15,7 +15,7 @@ namespace Tellurian.Geospatial
 
         public static Latitude FromDegrees(double degrees) => new Latitude(degrees, value => value >=-90 && value <= 90);
         public static Latitude FromRadians(double radians) => FromDegrees(radians * 180 / Math.PI);
-        private Latitude(double degrees, Func<double, bool> validate)
+        private Latitude(in double degrees, Func<double, bool> validate)
         {
             if (!validate.Invoke(degrees)) throw new ArgumentOutOfRangeException(nameof(degrees));
             _Degrees = degrees;
