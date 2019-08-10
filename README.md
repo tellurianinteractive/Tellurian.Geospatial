@@ -9,7 +9,7 @@ Types for basic calculations of dictances etc. and building blocks for more adva
 * **Speed** representing a zero or positive speed in m/s and km/h.
 * **Stretch** between two **Position**s representing propertes for stretches on earth surface, ie. *distance*, *direction*, *on track distance* etc.
 
-Each of these objects has value safe initializers and useful methods for calculating distances, angles etc. 
+Each of these objects has value safe initializers and useful methods for calculating distances, angles etc. They are also serializable with the *DataContractSerializer*.
 
 ## Namespace *Tellurian.Geospatial.Transform*
 Types and methods for transforming between cartesian and planar coordinates.
