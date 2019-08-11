@@ -29,12 +29,13 @@ namespace Tellurian.Geospatial
         public bool IsBelow(double metersPerSecond) => IsBelow(FromMetersPerSecond(metersPerSecond));
         public bool IsBelow(Speed other) => this < other; 
 
-        public static bool operator == (in Speed one, in Speed another) { return one.Equals(another); }
-        public static bool operator !=(in Speed one, in Speed another) { return !one.Equals(another); }
-        public static bool operator >(in Speed one, in Speed another) { return one.MetersPerSecond > another.MetersPerSecond; }
-        public static bool operator <(in Speed one, in Speed another) { return one.MetersPerSecond < another.MetersPerSecond; }
-        public static bool operator >=(in Speed one, in Speed another) { return one.MetersPerSecond >= another.MetersPerSecond; }
-        public static bool operator <=(in Speed one, in Speed another) { return one.MetersPerSecond <= another.MetersPerSecond; }
+        public static bool operator == (in Speed one, in Speed another) => one.Equals(another);
+        public static bool operator !=(in Speed one, in Speed another) => !one.Equals(another);
+        public static bool operator >(in Speed one, in Speed another) => one.MetersPerSecond > another.MetersPerSecond;
+        public static bool operator <(in Speed one, in Speed another) => one.MetersPerSecond < another.MetersPerSecond;
+        public static bool operator >=(in Speed one, in Speed another) => one.MetersPerSecond >= another.MetersPerSecond;
+        public static bool operator <=(in Speed one, in Speed another) => one.MetersPerSecond <= another.MetersPerSecond;
+        public static Speed operator +(in Speed one, in Speed another) => Speed.FromMetersPerSecond(one.MetersPerSecond + another.MetersPerSecond);
 
         public bool Equals(Speed other) => Math.Abs(MetersPerSecond - other.MetersPerSecond) <= CompareTolerance;
         public override bool Equals(object obj) => obj is Speed && Equals((Speed)obj);

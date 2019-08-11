@@ -7,12 +7,17 @@
     <Company>Tellurian</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Object model for geospatial calculations and transformations.</Description>
-    <Version>1.1.0</Version>
-    <PackageReleaseNotes>1.1.0: First production version.</PackageReleaseNotes>
+    <Version>1.1.1</Version>
+    <PackageReleaseNotes>1.1.1: Added + operators for Distance and Speed. Updated nuspec.
+1.1.0: Refactored all objects are now structs and most parameters are by reference.
+1.0.0: First production version.</PackageReleaseNotes>
     <Copyright>Stefan Fjällemark</Copyright>
-    <PackageLicenseUrl>https://opensource.org/licenses/MIT</PackageLicenseUrl>
-    <RepositoryUrl>https://github.com/fjallemark/Tellurian.Geospatial</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryUrl>https://github.com/fjallemark/Tellurian.Geospatial.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/fjallemark/Tellurian.Geospatial</PackageProjectUrl>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>position latitude longitude spatial</PackageTags>
   </PropertyGroup>
 
 </Project>

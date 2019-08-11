@@ -33,7 +33,9 @@ namespace Tellurian.Geospatial
         public static bool operator >(in Distance one, in Distance another) => one.CompareTo(another) == 1;  
         public static bool operator >=(in Distance one, in Distance another) => one.CompareTo(another) >= 0; 
         public static bool operator <(in Distance one, in Distance another) => one.CompareTo(another) == -1; 
-        public static bool operator <=(in Distance one, in Distance another) => one.CompareTo(another) <= 0; 
+        public static bool operator <=(in Distance one, in Distance another) => one.CompareTo(another) <= 0;
+        public static Distance operator + (in Distance one, in Distance another) => FromMeters(one.Meters + another.Meters);
+        public static Distance operator +(in Distance one, in double value) => FromMeters(one.Meters + value > 0 ? value : 0);
 
         public bool Equals(Distance other) => Math.Abs(other.Meters - Meters) < CompareTolerance;
         public override bool Equals(object obj)
