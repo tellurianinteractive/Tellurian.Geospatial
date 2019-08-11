@@ -152,6 +152,7 @@ namespace Tellurian.Geospatial.Tests
         [TestMethod]
         public void Min()
         {
+            Assert.AreEqual(Angle.FromDegrees(0), Angle.FromDegrees(0).Min(Angle.FromDegrees(0)));
             Assert.AreEqual(Angle.FromDegrees(10), Angle.FromDegrees(20).Min(Angle.FromDegrees(10)));
             Assert.AreEqual(Angle.FromDegrees(10), Angle.FromDegrees(20).Min(Angle.FromDegrees(30)));
             Assert.AreEqual(Angle.FromDegrees(180), Angle.FromDegrees(200).Min(Angle.FromDegrees(20)));

@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Tellurian.Geospatial
 {
     [DataContract]
-    public struct Angle : IEquatable<Angle>
+    public readonly struct Angle : IEquatable<Angle>
     {
         const double CompareTolerance = 0.01;
 
@@ -16,6 +16,10 @@ namespace Tellurian.Geospatial
         public static Angle FromDegrees(double degrees) => new Angle(degrees, value => value >= 0 && value < 360);
 
         public static Angle FromRadians(double radians) => FromDegrees(radians * 180 / Math.PI);
+
+        public static Angle Zero => FromDegrees(0);
+        public static Angle Right => FromDegrees(90);
+        public static Angle Straight => FromDegrees(180);
 
         Angle(in double degrees, Func<double, bool> validate)
         {
@@ -38,7 +42,7 @@ namespace Tellurian.Geospatial
         public static bool operator >=(in Angle one, in Angle another) => one.Degrees >= another.Degrees; 
         public static bool operator <(in Angle one, in Angle another) => one.Degrees < another.Degrees; 
         public static bool operator <=(in Angle one, in Angle another) => one.Degrees <= another.Degrees; 
-        public static Angle operator -(in Angle one, in Angle another) { var d = one.Degrees - another.Degrees; return FromDegrees(d > 0 ? d : d + 360.0); }
+        public static Angle operator -(in Angle one, in Angle another) { var d = one.Degrees - another.Degrees; return FromDegrees(d >= 0 ? d : d + 360.0); }
         public static Angle operator +(in Angle one, in Angle another) { var d = one.Degrees + another.Degrees; return FromDegrees(d < 360.0 ? d : d - 360.0); }
 
         public Angle Min(in Angle other)

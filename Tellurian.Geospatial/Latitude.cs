@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Tellurian.Geospatial
 {
     [DataContract]
-    public struct Latitude : IEquatable<Latitude>
+    public readonly struct Latitude : IEquatable<Latitude>
     {
         const double CompareTolerance = 0.00001;
 

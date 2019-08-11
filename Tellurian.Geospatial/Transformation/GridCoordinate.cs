@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Tellurian.Geospatial.Transformation
 {
-    public struct GridCoordinate : IEquatable<GridCoordinate>
+    public readonly struct GridCoordinate : IEquatable<GridCoordinate>
     {
         public GridCoordinate(double northing, double easting)
         {

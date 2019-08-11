@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Tellurian.Geospatial
 {
     [DataContract]
-    public struct Distance : IEquatable<Distance>, IComparable<Distance>
+    public readonly struct Distance : IEquatable<Distance>, IComparable<Distance>
     {
         const double CompareTolerance = 0.001;
 

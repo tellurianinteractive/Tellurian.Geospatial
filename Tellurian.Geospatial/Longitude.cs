@@ -7,7 +7,7 @@ namespace Tellurian.Geospatial
 {
 
     [DataContract]
-    public struct Longitude : IEquatable<Longitude>
+    public readonly struct Longitude : IEquatable<Longitude>
     {
         const double CompareTolerance = 0.00001;
 

@@ -1,6 +1,6 @@
 ﻿namespace Tellurian.Geospatial.Transformation
 {
-    public struct MapProjection
+    public readonly struct MapProjection
     {
         public MapProjection(EarthEllipsoid ellipsoid, double centralMeridian, double scale, double falseNorthing, double falseEasting)
         {

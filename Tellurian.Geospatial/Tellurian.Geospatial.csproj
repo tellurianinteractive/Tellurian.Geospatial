@@ -7,8 +7,9 @@
     <Company>Tellurian</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Object model for geospatial calculations and transformations.</Description>
-    <Version>1.1.1</Version>
-    <PackageReleaseNotes>1.1.1: Added + operators for Distance and Speed. Updated nuspec.
+    <Version>1.1.2</Version>
+    <PackageReleaseNotes>1.1.2: Added readonly for some structs. Bugfix in Angle + operator.
+1.1.1: Added + operators for Distance and Speed. Updated nuspec.
 1.1.0: Refactored all objects are now structs and most parameters are by reference.
 1.0.0: First production version.</PackageReleaseNotes>
     <Copyright>Stefan Fjällemark</Copyright>

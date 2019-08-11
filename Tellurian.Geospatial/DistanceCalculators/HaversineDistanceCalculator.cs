@@ -13,7 +13,7 @@ namespace Tellurian.Geospatial.DistanceCalculators
     /// https://www.movable-type.co.uk/scripts/latlong.html                      
     /// https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html 
     /// </remarks>
-    public class HaversineDistanceCalculator : IDistanceCalculator
+    public sealed class HaversineDistanceCalculator : IDistanceCalculator
     {
         public Distance GetDistance(Position from, Position to)
         {

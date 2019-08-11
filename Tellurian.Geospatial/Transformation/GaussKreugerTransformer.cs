@@ -13,7 +13,7 @@ namespace Tellurian.Geospatial.Transformation
     /// </remarks>
     public static class GaussKreugerTransformer
     {
-        public static GridCoordinate ToGridCoordinate(in Position geodeticPosition, in MapProjection  projection)
+        public static GridCoordinate ToGridCoordinate(in Position geodeticPosition, in MapProjection projection)
         {
             var axis = projection.Ellipsoid.SemiMajorAxis;
             var centralMeridian = projection.CentralMeridian;
@@ -35,8 +35,8 @@ namespace Tellurian.Geospatial.Transformation
             var beta2 = 13.0 * n * n / 48.0 - 3.0 * n * n * n / 5.0 + 557.0 * n * n * n * n / 1440.0;
             var beta3 = 61.0 * n * n * n / 240.0 - 103.0 * n * n * n * n / 140.0;
             var beta4 = 49561.0 * n * n * n * n / 161280.0;
-        // Convert
-        const double degToRad  = PI / 180.0;
+            // Convert
+            const double degToRad = PI / 180.0;
             var phi = latitude;
             var lambda = longitude;
             var lambdaZero = centralMeridian * degToRad;

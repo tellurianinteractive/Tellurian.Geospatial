@@ -17,7 +17,7 @@ namespace Tellurian.Geospatial
     /// https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html 
     /// </remarks>
     [DataContract]
-    public struct Position : IEquatable<Position>
+    public readonly struct Position : IEquatable<Position>
     {
         [DataMember(Name = "Latitude")]
         readonly Latitude _latitude;

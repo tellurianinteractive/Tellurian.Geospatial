@@ -6,7 +6,7 @@ using System.Runtime.Serialization;
 namespace Tellurian.Geospatial
 {
     [DataContract]
-    public struct Speed : IEquatable<Speed>
+    public readonly struct Speed : IEquatable<Speed>
     {
         const double CompareTolerance = 0.01;
 
