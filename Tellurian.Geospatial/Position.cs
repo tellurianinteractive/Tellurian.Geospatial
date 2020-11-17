@@ -20,15 +20,15 @@ namespace Tellurian.Geospatial
     public readonly struct Position : IEquatable<Position>
     {
         [DataMember(Name = "Latitude")]
-        readonly Latitude _latitude;
+        private readonly Latitude _latitude;
 
         [DataMember(Name = "Longitude")]
-        readonly Longitude _longitude;
+        private readonly Longitude _longitude;
 
         public static Position Origo => Position.FromDegrees(0, 0);
 
         public static Position FromDegrees(double latitude, double longitude) => new Position(latitude, longitude);
-  
+
         public static Position FromRadians(double latitude, double longitude) => new Position(latitude * 180 / Math.PI, longitude * 180 / Math.PI);
 
         private Position(in double latitude, in double longitude)
@@ -39,7 +39,7 @@ namespace Tellurian.Geospatial
 
         public bool IsOrigo => _latitude.IsZero && _longitude.IsZero;
         public Latitude Latitude => _latitude;
-        public Longitude Longitude => _longitude; 
+        public Longitude Longitude => _longitude;
 
         /// <summary>
         /// Calculate the destina­tion point travelling along a (shortest distance) great circle arc.
@@ -50,27 +50,37 @@ namespace Tellurian.Geospatial
         /// <remarks>
         /// Formula from https://www.movable-type.co.uk/scripts/latlong.html
         /// </remarks>
-        public Position Destination(in Angle initialBearing, in Distance distance )
+        public Position Destination(in Angle initialBearing, in Distance distance)
         {
             var φ1 = Latitude.Radians;
             var λ1 = Longitude.Radians;
             var δ = initialBearing.Radians;
-            var R = EarthMeanRadiusMeters;
+            const double R = EarthMeanRadiusMeters;
             var d = distance.Meters;
 
-            var φ2 = Asin(Sin(φ1) * Cos(d / R) + Cos(φ1) * Sin(d / R) * Cos(δ));
-            var λ2 = λ1 + Atan2(Sin(δ) * Sin(d / R) * Cos(φ1), Cos(d / R) - Sin(φ1) * Sin(φ2));
+            var φ2 = Asin((Sin(φ1) * Cos(d / R)) + (Cos(φ1) * Sin(d / R) * Cos(δ)));
+            var λ2 = λ1 + Atan2(Sin(δ) * Sin(d / R) * Cos(φ1), Cos(d / R) - (Sin(φ1) * Sin(φ2)));
             return FromRadians(φ2, λ2);
         }
 
-        public static bool operator == (in Position one, in Position another) => one.Equals(another);
-        public static bool operator !=(in Position one, in Position another) => ! one.Equals(another);
-        public static Position operator -(in Position one, in Position another) => FromDegrees(one.Latitude.Degrees - another.Latitude.Degrees, one.Longitude.Degrees - another.Longitude.Degrees);
-        public bool Equals(Position other) => Latitude == other.Latitude && Longitude == other.Longitude;
-        public override bool Equals(object obj) => obj is Position && Equals((Position)obj);
+        public  bool IsBetween(Position before, Position after)
+        {
+            var s = Stretch.Between(before, after);
+            var s1 = Stretch.Between(before, this);
+            var s2 = Stretch.Between(after, this);
+            var a1 = (s.Direction.To(s1.Direction));
+            var a2 = (s.Direction.Reverse.To(s2.Direction));
+            return a1.IsAcute && !a1.IsRight && a2.IsAcute && !a2.IsRight && !s1.Distance.IsZero && !s2.Distance.IsZero;
+        }
 
-        public override string ToString() => string.Format(CultureInfo.InvariantCulture,"{0},{1}", Latitude.Degrees, Longitude.Degrees);
+        public static bool operator ==(in Position one, in Position another) => one.Equals(another);
+        public static bool operator !=(in Position one, in Position another) => !one.Equals(another);
+        public bool Equals(Position other) => Latitude == other.Latitude && Longitude == other.Longitude;
+        public override bool Equals(object obj) => obj is Position position && Equals(position);
+
+        public override string ToString() => string.Format(CultureInfo.InvariantCulture, "{0},{1}", Latitude.Degrees, Longitude.Degrees);
+
         [ExcludeFromCodeCoverage]
-        public override int GetHashCode() => _latitude.GetHashCode() / 2 + _longitude.GetHashCode() / 2;
+        public override int GetHashCode() => (_latitude.GetHashCode() / 2) + (_longitude.GetHashCode() / 2);
     }
 }

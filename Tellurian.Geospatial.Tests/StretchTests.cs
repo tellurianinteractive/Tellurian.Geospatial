@@ -56,7 +56,7 @@ namespace Tellurian.Geospatial.Tests
         [TestMethod]
         public void SerializationAndDeserializationWorks()
         {
-            var target = Stretch.Between(Position.FromDegrees(58.1, 11.9),Position.FromDegrees(59.1, 12.9));
+            var target = Stretch.Between(Position.FromDegrees(58.1, 11.9), Position.FromDegrees(59.1, 12.9));
             var actual = SerializationTester<Stretch>.SerializeAndDeserialize(target);
             Assert.AreEqual(target, actual);
         }
@@ -66,12 +66,8 @@ namespace Tellurian.Geospatial.Tests
         {
             Assert.IsTrue(Stretch.Between(TestData.Stockholm, TestData.Wellington) == Stretch.Between(TestData.Stockholm, TestData.Wellington));
             Assert.IsFalse(Stretch.Between(TestData.Stockholm, TestData.Wellington) == Stretch.Between(TestData.Hövik, TestData.Höviksnäs));
-            Assert.IsFalse(Stretch.Between(TestData.Stockholm, TestData.Wellington) == null);
-            Assert.IsFalse(null == Stretch.Between(TestData.Stockholm, TestData.Wellington));
             Assert.IsFalse(Stretch.Between(TestData.Stockholm, TestData.Wellington) != Stretch.Between(TestData.Stockholm, TestData.Wellington));
             Assert.IsTrue(Stretch.Between(TestData.Stockholm, TestData.Wellington) != Stretch.Between(TestData.Hövik, TestData.Höviksnäs));
-            Assert.IsTrue(Stretch.Between(TestData.Stockholm, TestData.Wellington) != null);
-            Assert.IsTrue(null != Stretch.Between(TestData.Stockholm, TestData.Wellington));
         }
 
         [TestMethod]
@@ -86,8 +82,8 @@ namespace Tellurian.Geospatial.Tests
         [TestMethod]
         public void MinAngle()
         {
-            var s = Stretch.Between(TestData.Hövik,TestData.Höviksnäs);
-            Assert.AreEqual(Angle.FromDegrees(173.47), s.MinAngle(Position.FromDegrees(58.033296, 11.750197)));
+            var s = Stretch.Between(TestData.Hövik, TestData.Höviksnäs);
+            Assert.AreEqual(Angle.FromDegrees(173.471107), s.MinAngle(Position.FromDegrees(58.033296, 11.750197)));
         }
 
         [TestMethod]

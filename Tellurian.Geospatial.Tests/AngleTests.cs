@@ -23,13 +23,13 @@ namespace Tellurian.Geospatial.Tests
         [TestMethod]
         public void NegativeAngleIsInvalid()
         {
-          Assert.ThrowsException<ArgumentOutOfRangeException>(() =>  Angle.FromDegrees(-1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => Angle.FromDegrees(-1));
         }
 
         [TestMethod]
         public void Angle360IsInvalid()
         {
-          Assert.ThrowsException<ArgumentOutOfRangeException>(() =>  Angle.FromDegrees(360));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => Angle.FromDegrees(360));
         }
 
         [TestMethod]
@@ -74,7 +74,7 @@ namespace Tellurian.Geospatial.Tests
             var target = Angle.FromDegrees(1.5);
             Assert.AreEqual("1,50°", target.ToString());
         }
-     
+
         [TestMethod]
         public void SerializationAndDeserializationWorks()
         {
@@ -128,8 +128,8 @@ namespace Tellurian.Geospatial.Tests
         {
             Assert.AreEqual(Angle.FromDegrees(10), Angle.FromDegrees(10));
             Assert.AreNotEqual(Angle.FromDegrees(10), new object());
-            Assert.AreNotEqual(Angle.FromDegrees(9.98), Angle.FromDegrees(10));
-            Assert.AreEqual(Angle.FromDegrees(9.99), Angle.FromDegrees(10));
+            Assert.AreNotEqual(Angle.FromDegrees(9.99998), Angle.FromDegrees(10));
+            Assert.AreEqual(Angle.FromDegrees(9.999999), Angle.FromDegrees(10));
         }
 
         [TestMethod]

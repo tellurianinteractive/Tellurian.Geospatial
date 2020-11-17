@@ -5,9 +5,9 @@ namespace Tellurian.Geospatial.Transformation.Tests
     [TestClass]
     public class GridCoordinateTests
     {
-            const double Northing = 36346.345;
-            const double Easting = 12324.43;
- 
+        const double Northing = 36346.345;
+        const double Easting = 12324.43;
+
         [TestMethod]
         public void ConstructorWorks()
         {

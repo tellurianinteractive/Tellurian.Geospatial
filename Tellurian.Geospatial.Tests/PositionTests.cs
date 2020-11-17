@@ -18,18 +18,17 @@ namespace Tellurian.Geospatial.Tests
         public void Equals()
         {
             Assert.AreEqual(Position.FromDegrees(10, -20), Position.FromDegrees(10, -20));
-            Assert.AreNotEqual(Position.FromDegrees(10, -20), Position.FromDegrees(10, -20.001));
+            Assert.AreNotEqual(Position.FromDegrees(10, -20), Position.FromDegrees(10, -20.011));
             Assert.AreNotEqual(Position.FromDegrees(10, -20), new object());
         }
 
         [TestMethod]
         public void Operators()
         {
-            Assert.IsTrue(Position.FromDegrees(45, 45) == Position.FromRadians(Math.PI / 4, Math.PI/4));
+            Assert.IsTrue(Position.FromDegrees(45, 45) == Position.FromRadians(Math.PI / 4, Math.PI / 4));
             Assert.IsFalse(Position.FromDegrees(45, 45.1) == Position.FromRadians(Math.PI / 4, Math.PI / 4));
             Assert.IsFalse(Position.FromDegrees(45, 45) != Position.FromRadians(Math.PI / 4, Math.PI / 4));
             Assert.IsTrue(Position.FromDegrees(45, 45.1) != Position.FromRadians(Math.PI / 4, Math.PI / 4));
-            Assert.AreEqual(Position.FromDegrees(44, 46), Position.FromDegrees(45, 45) - Position.FromDegrees(1, -1));
         }
 
         [TestMethod]
@@ -66,5 +65,61 @@ namespace Tellurian.Geospatial.Tests
         {
             Assert.AreEqual(Position.FromDegrees(0, 0), Position.Origo);
         }
+
+        #region IsBetween tests
+
+        [TestMethod]
+        public void PositionIsBetween()
+        {
+            var left = Position.FromDegrees(50, 10);
+            var right = left.Destination(Angle.Zero, Distance.FromMeters(1000));
+            var target = left.Destination(Angle.FromDegrees(45), Distance.FromMeters(1000));
+            Assert.IsTrue(target.IsBetween(left, right));
+        }
+
+        [TestMethod]
+        public void LeftPositionIsNotBetween()
+        {
+            var left = Position.FromDegrees(50, 10);
+            var right = left.Destination(Angle.Zero, Distance.FromMeters(1000));
+            Assert.IsFalse(left.IsBetween(left, right));
+        }
+
+        [TestMethod]
+        public void RightPositionIsNotBetween()
+        {
+            var left = Position.FromDegrees(50, 10);
+            var right = left.Destination(Angle.Zero, Distance.FromMeters(1000));
+            Assert.IsFalse(right.IsBetween(left, right));
+        }
+
+        [TestMethod]
+        public void PositionIsNotBetween()
+        {
+            var left = Position.FromDegrees(50, 10);
+            var right = left.Destination(Angle.Zero, Distance.FromMeters(1000));
+            var target = left.Destination(Angle.FromDegrees(45).Reverse, Distance.FromMeters(1000));
+            Assert.IsFalse(target.IsBetween(left, right));
+        }
+
+        [TestMethod]
+        public void LeftPositionInRightAngleIsNotBetween()
+        {
+            var left = Position.FromDegrees(50, 10);
+            var right = left.Destination(Angle.Zero, Distance.FromMeters(1000));
+            var target = left.Destination(Angle.Right, Distance.FromMeters(1000));
+            Assert.IsFalse(target.IsBetween(left, right));
+        }
+
+        [TestMethod]
+        public void RightPositionInRightAngleIsNotBetween()
+        {
+            var right = Position.FromDegrees(50, 10);
+            var left = right.Destination(Angle.Zero.Reverse, Distance.FromMeters(1000));
+            var target = right.Destination(Angle.Right, Distance.FromMeters(1));
+            Assert.IsFalse(target.IsBetween(left, right));
+        }
+
+        #endregion
     }
 }

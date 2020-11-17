@@ -28,7 +28,7 @@ namespace Tellurian.Geospatial.Transformation.Tests
             AssertEllipsoid(target, 6378137.0, 6356752.31414, 0.00335281068123805);
         }
 
-         [TestMethod]
+        [TestMethod]
         public void CreateWgs84()
         {
             var target = Ellipsoids.Wgs84;

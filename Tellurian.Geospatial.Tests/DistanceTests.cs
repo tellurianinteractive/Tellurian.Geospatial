@@ -31,7 +31,7 @@ namespace Tellurian.Geospatial.Tests
         {
             var one = Distance.FromMeters(1);
             var another = Distance.FromMeters(1);
-            Assert.IsTrue(one.Equals( another));
+            Assert.IsTrue(one.Equals(another));
         }
 
         [TestMethod]
@@ -39,7 +39,7 @@ namespace Tellurian.Geospatial.Tests
         {
             var one = Distance.FromMeters(1);
             var another = Distance.FromMeters(1);
-            Assert.AreEqual(one,another);
+            Assert.AreEqual(one, another);
         }
 
         [TestMethod]

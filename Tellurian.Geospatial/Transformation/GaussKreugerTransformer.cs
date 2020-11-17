@@ -1,5 +1,4 @@
 ﻿using static System.Math;
-using static Tellurian.Geospatial.Transformation.Math;
 
 namespace Tellurian.Geospatial.Transformation
 {

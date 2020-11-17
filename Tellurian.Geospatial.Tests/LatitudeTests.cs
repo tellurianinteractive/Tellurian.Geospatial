@@ -6,12 +6,12 @@ namespace Tellurian.Geospatial.Tests
     [TestClass]
     public class LatitudeTests
     {
-
         [TestMethod]
         public void Over90DegreesThrows()
         {
             Assert.ThrowsException<ArgumentOutOfRangeException>(() => Latitude.FromDegrees(90.1));
         }
+
         [TestMethod]
         public void UnderMinus90DegreesThrows()
         {
@@ -23,13 +23,13 @@ namespace Tellurian.Geospatial.Tests
         {
             var target = Latitude.FromDegrees(45);
             Assert.AreEqual(45.0, target.Degrees);
-            Assert.AreEqual(Math.PI/4, target.Radians);
+            Assert.AreEqual(Math.PI / 4, target.Radians);
         }
 
         [TestMethod]
         public void InitializationWithRadians()
         {
-            var target = Latitude.FromRadians(Math.PI/4);
+            var target = Latitude.FromRadians(Math.PI / 4);
             Assert.AreEqual(45.0, target.Degrees);
             Assert.AreEqual(Math.PI / 4, target.Radians);
         }
@@ -38,7 +38,7 @@ namespace Tellurian.Geospatial.Tests
         public void Equals()
         {
             Assert.AreEqual(Latitude.FromDegrees(58), Latitude.FromDegrees(58));
-            Assert.AreNotEqual(Latitude.FromDegrees(58), Latitude.FromDegrees(58.001));
+            Assert.AreNotEqual(Latitude.FromDegrees(58), Latitude.FromDegrees(58.011));
             Assert.AreNotEqual(Latitude.FromDegrees(58), new object());
         }
 
@@ -70,6 +70,5 @@ namespace Tellurian.Geospatial.Tests
         {
             Assert.AreEqual("45,0", Latitude.FromDegrees(45).ToString());
         }
-
     }
 }

@@ -6,17 +6,20 @@ using System.Runtime.Serialization;
 namespace Tellurian.Geospatial
 {
     [DataContract]
-    public readonly struct Speed : IEquatable<Speed>
+    public readonly struct Speed : IEquatable<Speed>, IComparable<Speed>
     {
-        const double CompareTolerance = 0.01;
+        private const double CompareTolerance = 0.01;
 
         [DataMember(Name = "MetersPerSecond")]
-        readonly double _MetersPerSecond;
+        private readonly double _MetersPerSecond;
 
         public static Speed Zero { get; } = new Speed(0);
 
         public static Speed FromMetersPerSecond(double metersPerSecond) => new Speed(metersPerSecond);
         public static Speed FromKilometersPerHour(double kilometersPerHour) => new Speed(kilometersPerHour / 3.6);
+
+        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters",
+            Justification = "Only english is supported.")]
         private Speed(in double metersPerSecond)
         {
             if (metersPerSecond < 0) throw new ArgumentOutOfRangeException(nameof(metersPerSecond), "Speed must be zero or positive.");
@@ -27,19 +30,21 @@ namespace Tellurian.Geospatial
         public double KilometersPerHour => MetersPerSecond * 3.6;
         public bool IsZero => MetersPerSecond < CompareTolerance;
         public bool IsBelow(double metersPerSecond) => IsBelow(FromMetersPerSecond(metersPerSecond));
-        public bool IsBelow(Speed other) => this < other; 
-
-        public static bool operator == (in Speed one, in Speed another) => one.Equals(another);
+        public bool IsBelow(Speed other) => this < other;
+        public static bool operator ==(in Speed one, in Speed another) => one.Equals(another);
         public static bool operator !=(in Speed one, in Speed another) => !one.Equals(another);
         public static bool operator >(in Speed one, in Speed another) => one.MetersPerSecond > another.MetersPerSecond;
         public static bool operator <(in Speed one, in Speed another) => one.MetersPerSecond < another.MetersPerSecond;
         public static bool operator >=(in Speed one, in Speed another) => one.MetersPerSecond >= another.MetersPerSecond;
         public static bool operator <=(in Speed one, in Speed another) => one.MetersPerSecond <= another.MetersPerSecond;
         public static Speed operator +(in Speed one, in Speed another) => Speed.FromMetersPerSecond(one.MetersPerSecond + another.MetersPerSecond);
+        public int CompareTo(Speed other) => MetersPerSecond < other.MetersPerSecond ? -1 : MetersPerSecond > other.MetersPerSecond ? 1 : 0;
+        public static Speed Add(Speed one, Speed another) => one + another;
 
         public bool Equals(Speed other) => Math.Abs(MetersPerSecond - other.MetersPerSecond) <= CompareTolerance;
-        public override bool Equals(object obj) => obj is Speed && Equals((Speed)obj);
+        public override bool Equals(object obj) => obj is Speed speed && Equals(speed);
         public override string ToString() => string.Format(CultureInfo.InvariantCulture, "{0:F1}m/s", MetersPerSecond);
+
         [ExcludeFromCodeCoverage]
         public override int GetHashCode() => MetersPerSecond.GetHashCode();
     }

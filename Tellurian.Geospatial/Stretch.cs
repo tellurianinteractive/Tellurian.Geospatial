@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Resources;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using Tellurian.Geospatial.DistanceCalculators;
 using static System.Math;
@@ -23,6 +25,7 @@ namespace Tellurian.Geospatial
 
         [DataMember(Name = "From", IsRequired = true, Order = 1)]
         private readonly Position _From;
+
         [DataMember(Name = "To", IsRequired = true, Order = 2)]
         private readonly Position _To;
 
@@ -49,31 +52,73 @@ namespace Tellurian.Geospatial
         }
 
         public bool IsZero => From == To;
-        public Angle Direction { get { if (!_Direction.HasValue) _Direction = RhumbBearing(); return _Direction.Value; } }
-        public Angle InitialBearing { get { if (!_InitialBearing.HasValue) _InitialBearing = GetInitialBearing(); return _InitialBearing.Value; } }
-        public Angle FinalBearing { get { if (!_FinalBearing.HasValue) _FinalBearing = Angle.FromDegrees((Inverse.InitialBearing.Degrees + 180) % 360); return _FinalBearing.Value; } }
+        public Angle Direction { get { return _Direction ?? (_Direction = RhumbBearing()).Value; } }
+        public Angle InitialBearing { get { return _InitialBearing ?? (_InitialBearing = GetInitialBearing()).Value; } }
+        public Angle FinalBearing { get { return _FinalBearing ?? (_FinalBearing = Angle.FromDegrees((Inverse.InitialBearing.Degrees + 180) % 360)).Value; } }
         public Position From => _From;
         public Position To => _To;
-        public Distance Distance { get { if (!_Distance.HasValue) _Distance = _DistanceCalculator.GetDistance(From, To); return _Distance.Value; } }
+        public Distance Distance { get { return _Distance ?? (_Distance = _DistanceCalculator.GetDistance(From, To)).Value; } }
         public Stretch Inverse => new Stretch(_To, _From);
         public bool IsEastWestLine => _From.Latitude.Equals(_To.Latitude);
 
+        private Angle GetInitialBearing()
+        {
+            var lat1 = _From.Latitude.Radians;
+            var lat2 = _To.Latitude.Radians;
+            var dLon = _To.Longitude.Radians - _From.Longitude.Radians;
+            var y = Sin(dLon) * Cos(lat2);
+            var x = (Cos(lat1) * Sin(lat2)) - (Sin(lat1) * Cos(lat2) * Cos(dLon));
+            var b = Math.Atan2(y, x);
+            return Angle.FromRadians((b + PI2) % PI2);
+        }
 
+        internal Angle RhumbBearing()
+        {
+            var lat2 = _To.Latitude.Radians;
+            var lat1 = _From.Latitude.Radians;
+            var dPhi = Log(Tan((lat2 / 2) + (Math.PI / 4)) / Tan((lat1 / 2) + (Math.PI / 4)));
+            var dLon = _To.Longitude.Radians - _From.Longitude.Radians;
+            var b = Atan2(dLon, dPhi);
+            return Angle.FromRadians((b + PI2) % PI2);
+        }
+
+        public override bool Equals(object obj) => obj is Stretch stretch && Equals(stretch);
+        public bool Equals(Stretch other) => From.Equals(other.From) && To.Equals(other.To);
+
+        public static bool operator ==(in Stretch value1, in Stretch value2) => value1.Equals(value2);
+        public static bool operator !=(in Stretch value1, in Stretch value2) => !value1.Equals(value2);
+
+        [ExcludeFromCodeCoverage]
+        public override int GetHashCode() => From.GetHashCode();
+    }
+
+    public static class StretchExtensions
+    {
         /// <summary>
         /// The distance of a point from a great-circle path (sometimes called cross track error). 
         /// </summary>
         /// <param name="at"></param>
         /// <returns></returns>
-        public Distance CrossTrackDistance(Position at)
+        public static Distance CrossTrackDistance(this Stretch me, Position at)
         {
             const double R = EarthMeanRadiusMeters;
-            var s = new Stretch(_From, at);
+            var s = Stretch.Between(me.From, at);
             var δ13 = s.Distance.Meters;
             var θ13 = s.InitialBearing.Radians;
-            var θ12 = InitialBearing.Radians;
+            var θ12 = me.InitialBearing.Radians;
             var d = Asin(Sin(δ13 / R) * Sin(θ13 - θ12)) * R;
             return Distance.FromMeters(Abs(d));
         }
+
+        public static bool IsOnTrack(this Stretch me, Position at, Distance maxOffTrackDistance) => me.CrossTrackDistance(at) <= maxOffTrackDistance;
+
+        /// <summary>
+        /// Checks if a <see cref="Position"/> is anywhere between the strecth's two ends, regardless of offtrack distance.
+        /// </summary>
+        /// <param name="at"></param>
+        /// <returns></returns>
+        public static bool IsBetweenEnds(this Stretch me, Position at) => at.IsBetween(me.From, me.To);
+
         /// <summary>
         ///     ''' Calculates the angle between the two directions starting from the position
         ///     ''' and ending in the start and end point of the stretch.
@@ -82,10 +127,10 @@ namespace Tellurian.Geospatial
         ///     ''' <returns>The angle between the two directions starting from the position
         ///     ''' and ending in the start and end point of the stretch.</returns>
         ///     ''' <remarks></remarks>
-        public Angle MinAngle(Position at)
+        public static Angle MinAngle(this Stretch me, Position at)
         {
-            var a1 = new Stretch(at, From).Direction;
-            var a2 = new Stretch(at, To).Direction;
+            var a1 = Stretch.Between(at, me.From).Direction;
+            var a2 = Stretch.Between(at, me.To).Direction;
             return a1.Min(a2);
         }
 
@@ -95,44 +140,14 @@ namespace Tellurian.Geospatial
         ///     ''' <param name="at">The <see cref="Position">position</see> to caclulate the on track distance for.</param>
         ///     ''' <returns>The on track distance from the start of the stretch.</returns>
         ///     ''' <remarks></remarks>
-        public Distance OnTrackDistance(Position at)
+        public static Distance OnTrackDistance(this Stretch me, Position at)
         {
             const double r = EarthMeanRadiusMeters / 1000;
-            var s = new Stretch(From, at);
+            var s = Stretch.Between(me.From, at);
             var d13 = s.Distance.Meters;
-            var dXt = CrossTrackDistance(at).Meters;
+            var dXt = me.CrossTrackDistance(at).Meters;
             var d = Acos(Cos(d13 / r) / Cos(dXt / r)) * r;
             return Distance.FromMeters(Abs(d));
         }
-
-        private Angle GetInitialBearing()
-        {
-            var lat1 = _From.Latitude.Radians;
-            var lat2 = _To.Latitude.Radians;
-            var dLon = _To.Longitude.Radians - _From.Longitude.Radians;
-            var y = Sin(dLon) * Cos(lat2);
-            var x = Cos(lat1) * Sin(lat2) - Sin(lat1) * Cos(lat2) * Cos(dLon);
-            var b = Math.Atan2(y, x);
-            return Angle.FromRadians((b + PI2) % PI2);
-        }
-
-        internal Angle RhumbBearing()
-        {
-            var lat2 = _To.Latitude.Radians;
-            var lat1 = _From.Latitude.Radians;
-            var dPhi = Log(Tan(lat2 / 2 + Math.PI / 4) / Tan(lat1 / 2 + Math.PI / 4));
-            var dLon = _To.Longitude.Radians - _From.Longitude.Radians;
-            var b = Atan2(dLon, dPhi);
-            return Angle.FromRadians((b + PI2) % PI2);
-        }
-
-        public override bool Equals(object obj) => obj is Stretch && Equals((Stretch) obj);
-        public bool Equals(Stretch other) => From.Equals(other.From) && To.Equals(other.To);
-
-        public static bool operator ==(in Stretch value1, in Stretch value2) => value1.Equals(value2);
-        public static bool operator !=(in Stretch value1, in Stretch value2) => !value1.Equals(value2);
-
-        [ExcludeFromCodeCoverage]
-        public override int GetHashCode() => From.GetHashCode();
     }
 }

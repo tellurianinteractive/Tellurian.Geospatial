@@ -9,15 +9,15 @@ namespace Tellurian.Geospatial.Tests
         [TestMethod]
         public void NegativeSpeedThrows()
         {
-            Assert.ThrowsException<ArgumentOutOfRangeException>(() =>  Speed.FromMetersPerSecond(-1));
+            Assert.ThrowsException<ArgumentOutOfRangeException>(() => Speed.FromMetersPerSecond(-1));
         }
 
         [TestMethod]
         public void Equals()
         {
-            Assert.AreEqual(Speed.FromMetersPerSecond(10),(Speed.FromMetersPerSecond(10)));
-            Assert.AreNotEqual(Speed.FromMetersPerSecond(10),(Speed.FromMetersPerSecond(10.02)));
-            Assert.AreNotEqual(Speed.FromMetersPerSecond(10),(new object()));
+            Assert.AreEqual(Speed.FromMetersPerSecond(10), (Speed.FromMetersPerSecond(10)));
+            Assert.AreNotEqual(Speed.FromMetersPerSecond(10), (Speed.FromMetersPerSecond(10.02)));
+            Assert.AreNotEqual(Speed.FromMetersPerSecond(10), (new object()));
         }
 
         [TestMethod]

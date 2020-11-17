@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <PackageId>Tellurian.Geospatial</PackageId>
     <Authors>Stefan Fjällemark</Authors>
     <Company>Tellurian</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Object model for geospatial calculations and transformations.</Description>
-    <Version>1.1.2</Version>
-    <PackageReleaseNotes>1.1.2: Added readonly for some structs. Bugfix in Angle + operator.
+    <Version>2.0.0</Version>
+    <PackageReleaseNotes>2.0.0 Upgrade to .NET 5.
+1.2.0: Consistent comparision of Angle, Latitude and Longitude. New methods on Angle, Position and Stretch.
+1.1.2: Added readonly for some structs. Bugfix in Angle + operator.
 1.1.1: Added + operators for Distance and Speed. Updated nuspec.
 1.1.0: Refactored all objects are now structs and most parameters are by reference.
 1.0.0: First production version.</PackageReleaseNotes>
@@ -18,7 +20,8 @@
     <PackageProjectUrl>https://github.com/fjallemark/Tellurian.Geospatial</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>position latitude longitude spatial</PackageTags>
+    <PackageTags>position latitude longitude speed distance spatial wgs84 grs80 utm sweref euref etrs map projection transformation</PackageTags>
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
   </PropertyGroup>
-
 </Project>
