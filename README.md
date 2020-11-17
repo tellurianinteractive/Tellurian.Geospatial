@@ -1,6 +1,6 @@
 # Tellurian.Geospatial
 Strongly typed object model for geospatial calculations and transformations.  
-Released under MIT license 2019.
+Released under MIT license 2020.
 ## Namespace *Tellurian.Geospatial*
 Types for basic calculations of dictances etc. and building blocks for more advanced spatial algorithms.
 * **Angle** represening 0 <= *degrees* < 360 and radians 0 <= *radians* < 2Π.
@@ -24,7 +24,7 @@ The method for calculating distances between **Position**s is pluggable because 
 
 ## References
 This implementation uses part of *Latitude/longitude spherical geodesy tools*  
-MIT Licence (c) Chris Veness 2002-2019  
+MIT Licence (c) Chris Veness 2002-2020  
 https://www.movable-type.co.uk/scripts/latlong.html  
 https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html  
 
