@@ -1,4 +1,7 @@
-﻿namespace Tellurian.Geospatial.Transformation
+﻿using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
+
+namespace Tellurian.Geospatial.Transformation
 {
     /// <summary>
     /// Representation of the earths spherical form.
@@ -6,27 +9,22 @@
     /// <remarks>
     /// References: https://en.wikipedia.org/wiki/Earth_ellipsoid
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types",
-        Justification = "There are no reason for comparing ellipsoids.")]
-    public readonly struct EarthEllipsoid
+    [DataContract]
+    public record EarthEllipsoid
     {
-        public static EarthEllipsoid CreateFromSemiAxes(double semiMajorAxis, double semiMinorAxis) => new EarthEllipsoid(semiMajorAxis, semiMinorAxis);
+        public static EarthEllipsoid CreateFromSemiAxes(double semiMajorAxis, double semiMinorAxis) => 
+            new EarthEllipsoid { SemiMajorAxis = semiMajorAxis, SemiMinorAxis = semiMinorAxis };
 
-        public static EarthEllipsoid CreateFromSemiMajorAxisAndFlattening(double semiMajorAxis, double flattening)
-        {
-            var semiMinorAxis = semiMajorAxis - (flattening * semiMajorAxis);
-            return new EarthEllipsoid(semiMajorAxis, semiMinorAxis);
-        }
+        public static EarthEllipsoid CreateFromSemiMajorAxisAndFlattening(double semiMajorAxis, double flattening) => 
+            new EarthEllipsoid { SemiMajorAxis = semiMajorAxis, SemiMinorAxis = semiMajorAxis - (flattening * semiMajorAxis) };
 
-        private EarthEllipsoid(double semiMajorAxis, double semiMinorAxis)
-        {
-            SemiMajorAxis = semiMajorAxis;
-            SemiMinorAxis = semiMinorAxis;
-            Flattening = (SemiMajorAxis - SemiMinorAxis) / SemiMajorAxis;
-        }
+        [DataMember(Name = "SemiMajorAxis")]
+        public double SemiMajorAxis { get; init; }
 
-        public double Flattening { get; }
-        public double SemiMajorAxis { get; }
-        public double SemiMinorAxis { get; }
+        [DataMember(Name = "SemiMinorAxis")]
+        public double SemiMinorAxis { get; init; }
+
+        [JsonIgnore]
+        public double Flattening => (SemiMajorAxis - SemiMinorAxis) / SemiMajorAxis;
     }
 }

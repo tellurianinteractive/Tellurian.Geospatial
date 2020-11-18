@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using static System.Math;
 using static Tellurian.Geospatial.Constants;
 
@@ -20,12 +21,12 @@ namespace Tellurian.Geospatial
     public readonly struct Position : IEquatable<Position>
     {
         [DataMember(Name = "Latitude")]
-        private readonly Latitude _latitude;
+        private readonly Latitude _Latitude;
 
         [DataMember(Name = "Longitude")]
-        private readonly Longitude _longitude;
+        private readonly Longitude _Longitude;
 
-        public static Position Origo => Position.FromDegrees(0, 0);
+        public static Position Origo => FromDegrees(0, 0);
 
         public static Position FromDegrees(double latitude, double longitude) => new Position(latitude, longitude);
 
@@ -33,13 +34,22 @@ namespace Tellurian.Geospatial
 
         private Position(in double latitude, in double longitude)
         {
-            _latitude = Latitude.FromDegrees(latitude);
-            _longitude = Longitude.FromDegrees(longitude);
+            _Latitude = Latitude.FromDegrees(latitude);
+            _Longitude = Longitude.FromDegrees(longitude);
         }
 
-        public bool IsOrigo => _latitude.IsZero && _longitude.IsZero;
-        public Latitude Latitude => _latitude;
-        public Longitude Longitude => _longitude;
+        [JsonConstructor]
+        public Position(Latitude latitude, Longitude longitude)
+        {
+            _Longitude = longitude;
+            _Latitude = latitude;
+        }
+        [JsonPropertyName("latitude")]
+        public Latitude Latitude => _Latitude;
+        [JsonPropertyName("longitude")]
+        public Longitude Longitude => _Longitude;
+        [JsonIgnore]
+        public bool IsOrigo => _Latitude.IsZero && _Longitude.IsZero;
 
         /// <summary>
         /// Calculate the destina­tion point travelling along a (shortest distance) great circle arc.
@@ -81,6 +91,6 @@ namespace Tellurian.Geospatial
         public override string ToString() => string.Format(CultureInfo.InvariantCulture, "{0},{1}", Latitude.Degrees, Longitude.Degrees);
 
         [ExcludeFromCodeCoverage]
-        public override int GetHashCode() => (_latitude.GetHashCode() / 2) + (_longitude.GetHashCode() / 2);
+        public override int GetHashCode() => (_Latitude.GetHashCode() / 2) + (_Longitude.GetHashCode() / 2);
     }
 }

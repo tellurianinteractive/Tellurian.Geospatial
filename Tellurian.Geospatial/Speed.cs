@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial
 {
@@ -18,17 +19,19 @@ namespace Tellurian.Geospatial
         public static Speed FromMetersPerSecond(double metersPerSecond) => new Speed(metersPerSecond);
         public static Speed FromKilometersPerHour(double kilometersPerHour) => new Speed(kilometersPerHour / 3.6);
 
-        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters",
-            Justification = "Only english is supported.")]
-        private Speed(in double metersPerSecond)
+        [JsonConstructor]
+        public Speed(double metersPerSecond)
         {
             if (metersPerSecond < 0) throw new ArgumentOutOfRangeException(nameof(metersPerSecond), "Speed must be zero or positive.");
             _MetersPerSecond = metersPerSecond;
         }
-
+        [JsonPropertyName("metersPerSecond")]
         public double MetersPerSecond => _MetersPerSecond;
+        [JsonIgnore]
         public double KilometersPerHour => MetersPerSecond * 3.6;
+        [JsonIgnore]
         public bool IsZero => MetersPerSecond < CompareTolerance;
+
         public bool IsBelow(double metersPerSecond) => IsBelow(FromMetersPerSecond(metersPerSecond));
         public bool IsBelow(Speed other) => this < other;
         public static bool operator ==(in Speed one, in Speed another) => one.Equals(another);

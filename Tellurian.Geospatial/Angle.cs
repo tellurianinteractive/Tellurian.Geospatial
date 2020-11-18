@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial
 {
@@ -11,13 +12,8 @@ namespace Tellurian.Geospatial
         public const double DefaultCompareTolerance = 0.00001;
         public static double CompareTolerance { get; set; } = DefaultCompareTolerance;
 
-        [DataMember(Name = "Degrees")]
-        private readonly double _Degrees;
-
         public static Angle FromDegrees(double degrees) => new Angle(degrees, 0 , 360);
-
         public static Angle FromRadians(double radians) => FromDegrees(radians * 180 / Math.PI);
-
         public static Angle Zero => FromDegrees(0);
         public static Angle Right => FromDegrees(90);
         public static Angle Straight => FromDegrees(180);
@@ -28,14 +24,28 @@ namespace Tellurian.Geospatial
             _Degrees = degrees;
         }
 
+        [JsonConstructor]
+        public Angle(double degrees) : this(degrees, 0, 360) { }
+
+        [DataMember(Name = "Degrees")]
+        private readonly double _Degrees;
+
+        [JsonPropertyName("degrees")]
         public double Degrees => _Degrees;
 
+        [JsonIgnore]
         public double Radians => Degrees * Math.PI / 180;
+        [JsonIgnore]
         public Angle Complement => Degrees == 0 ? FromDegrees(0) : FromDegrees(360 - Degrees);
+        [JsonIgnore]
         public Angle Reverse => FromDegrees(Degrees >= 180 ? Degrees - 180 : Degrees + 180);
+        [JsonIgnore]
         public bool IsAcute => Degrees < 90.0;
+        [JsonIgnore]
         public bool IsObtuse { get { var a = Degrees < 180 ? Degrees : Degrees - 180; return a > 90.0 && a < 180.0; } }
+        [JsonIgnore]
         public bool IsRight => Math.Abs(Degrees - 90.0) < CompareTolerance || Math.Abs(Degrees - 270.0) < CompareTolerance;
+        [JsonIgnore]
         public bool IsStraight => Math.Abs(Degrees - 180.0) < CompareTolerance;
 
         /// <summary>
@@ -79,6 +89,6 @@ namespace Tellurian.Geospatial
         public bool Equals(Angle other) => CompareTo(other) == 0;
 
         [ExcludeFromCodeCoverage]
-        public override int GetHashCode() => _Degrees.GetHashCode();
+        public override int GetHashCode() => Degrees.GetHashCode();
     }
 }

@@ -6,21 +6,31 @@
     <Company>Tellurian</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Object model for geospatial calculations and transformations.</Description>
-    <Version>2.0.0</Version>
-    <PackageReleaseNotes>2.0.0 Upgrade to .NET 5.
-1.2.0: Consistent comparision of Angle, Latitude and Longitude. New methods on Angle, Position and Stretch.
-1.1.2: Added readonly for some structs. Bugfix in Angle + operator.
-1.1.1: Added + operators for Distance and Speed. Updated nuspec.
-1.1.0: Refactored all objects are now structs and most parameters are by reference.
-1.0.0: First production version.</PackageReleaseNotes>
+    <Version>2.1.0</Version>
+    <PackageReleaseNotes>2.1.0 All data objects now supports serialization and deserialization with DataContractSerializer and System.Text.Json.Serialization. Added new types for surfaces.
+      2.0.0 Upgrade to .NET 5.
+      1.2.0: Consistent comparision of Angle, Latitude and Longitude. New methods on Angle, Position and Stretch.
+      1.1.2: Added readonly for some structs. Bugfix in Angle + operator.
+      1.1.1: Added + operators for Distance and Speed. Updated nuspec.
+      1.1.0: Refactored all objects are now structs and most parameters are by reference.
+      1.0.0: First production version.</PackageReleaseNotes>
     <Copyright>Stefan Fjällemark</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/fjallemark/Tellurian.Geospatial.git</RepositoryUrl>
     <PackageProjectUrl>https://github.com/fjallemark/Tellurian.Geospatial</PackageProjectUrl>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <RepositoryType>git</RepositoryType>
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
     <PackageTags>position latitude longitude speed distance spatial wgs84 grs80 utm sweref euref etrs map projection transformation</PackageTags>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
+  </ItemGroup>
 </Project>

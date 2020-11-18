@@ -21,10 +21,18 @@ namespace Tellurian.Geospatial.Tests
         }
 
         [TestMethod]
-        public void SerializationAndDeserializationWorks()
+        public void XmlSerializationAndDeserializationWorks()
         {
             var target = Speed.FromKilometersPerHour(89.5);
-            var actual = SerializationTester<Speed>.SerializeAndDeserialize(target);
+            var actual = SerializationTester<Speed>.XmlSerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
+        public void JsonSerializationAndDeserializationWorks()
+        {
+            var target = Speed.FromKilometersPerHour(89.5);
+            var actual = SerializationTester<Speed>.JsonSerializeAndDeserialize(target);
             Assert.AreEqual(target, actual);
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tellurian.Geospatial.Tests;
 
 namespace Tellurian.Geospatial.Transformation.Tests
 {
@@ -27,5 +28,22 @@ namespace Tellurian.Geospatial.Transformation.Tests
             Assert.AreNotEqual(one, new object());
             Assert.AreNotEqual(one, null);
         }
+
+        [TestMethod]
+        public void XmlSerializationAndDeserializationWorks()
+        {
+            var target = new GridCoordinate(123.4, 987.6);
+            var actual = SerializationTester<GridCoordinate>.XmlSerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
+        public void JsonSerializationAndDeserializationWorks()
+        {
+            var target = new GridCoordinate(123.4, 987.6);
+            var actual = SerializationTester<GridCoordinate>.JsonSerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
     }
 }

@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
-using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 using Tellurian.Geospatial.DistanceCalculators;
 using static System.Math;
 using static Tellurian.Geospatial.Constants;
@@ -37,10 +36,11 @@ namespace Tellurian.Geospatial
 
         public static Stretch Between(in Position from, in Position to) => new Stretch(from, to);
         public static Stretch Between(in Position from, in Position to, in IDistanceCalculator distanceCalculator) => new Stretch(from, to, distanceCalculator);
+        
+        [JsonConstructor]
+        public Stretch(Position from, Position to) : this(from, to, DefaultDistanceCalculator) { }
 
-        private Stretch(in Position from, in Position to) : this(from, to, DefaultDistanceCalculator) { }
-
-        private Stretch(in Position from, in Position to, in IDistanceCalculator distanceCalculator)
+        private Stretch(Position from, Position to, IDistanceCalculator distanceCalculator)
         {
             _From = from;
             _To = to;
@@ -50,16 +50,26 @@ namespace Tellurian.Geospatial
             _InitialBearing = null;
             _FinalBearing = null;
         }
-
-        public bool IsZero => From == To;
-        public Angle Direction { get { return _Direction ?? (_Direction = RhumbBearing()).Value; } }
-        public Angle InitialBearing { get { return _InitialBearing ?? (_InitialBearing = GetInitialBearing()).Value; } }
-        public Angle FinalBearing { get { return _FinalBearing ?? (_FinalBearing = Angle.FromDegrees((Inverse.InitialBearing.Degrees + 180) % 360)).Value; } }
+        [JsonPropertyName("from")]
         public Position From => _From;
+        [JsonPropertyName("to")]
         public Position To => _To;
-        public Distance Distance { get { return _Distance ?? (_Distance = _DistanceCalculator.GetDistance(From, To)).Value; } }
+        [JsonIgnore]
+        public bool IsZero => From == To;
+        [JsonIgnore]
+        public Angle Direction => _Direction ?? (_Direction = RhumbBearing()).Value;
+        [JsonIgnore]
+        public Angle InitialBearing => _InitialBearing ?? (_InitialBearing = GetInitialBearing()).Value;
+        [JsonIgnore]
+        public Angle FinalBearing => _FinalBearing ?? (_FinalBearing = Angle.FromDegrees((Inverse.InitialBearing.Degrees + 180) % 360)).Value;
+        [JsonIgnore]
+        public Distance Distance => _Distance ?? (_Distance = _DistanceCalculator.GetDistance(From, To)).Value;
+        [JsonIgnore]
         public Stretch Inverse => new Stretch(_To, _From);
+        [JsonIgnore]
         public bool IsEastWestLine => _From.Latitude.Equals(_To.Latitude);
+
+        public Distance GetDistance(IDistanceCalculator useDistanceCalculator) => useDistanceCalculator.GetDistance(From, To);
 
         private Angle GetInitialBearing()
         {

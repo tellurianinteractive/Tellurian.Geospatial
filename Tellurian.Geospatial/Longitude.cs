@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial
 {
@@ -23,8 +24,13 @@ namespace Tellurian.Geospatial
             _Degrees = degrees;
         }
 
+        [JsonConstructor]
+        public Longitude(double degrees) : this(degrees, -180, 180) { }
+        [JsonPropertyName("degrees")]
         public double Degrees => _Degrees;
+        [JsonIgnore]
         public double Radians => Degrees * Math.PI / 180;
+        [JsonIgnore]
         public bool IsZero => Math.Abs(_Degrees) < CompareTolerance;
 
         public static bool operator ==(in Longitude one, in Longitude another) => one.Equals(another);

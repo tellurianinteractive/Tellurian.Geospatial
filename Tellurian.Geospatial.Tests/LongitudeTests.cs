@@ -43,10 +43,18 @@ namespace Tellurian.Geospatial.Tests
         }
 
         [TestMethod]
-        public void SerializationAndDeserializationWorks()
+        public void XmlSerializationAndDeserializationWorks()
         {
             var target = Longitude.FromDegrees(89.5);
-            var actual = SerializationTester<Longitude>.SerializeAndDeserialize(target);
+            var actual = SerializationTester<Longitude>.XmlSerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
+        public void JsonSerializationAndDeserializationWorks()
+        {
+            var target = Longitude.FromDegrees(89.5);
+            var actual = SerializationTester<Longitude>.JsonSerializeAndDeserialize(target);
             Assert.AreEqual(target, actual);
         }
 

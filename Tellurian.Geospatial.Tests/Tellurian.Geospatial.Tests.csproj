@@ -17,4 +17,8 @@
     <ProjectReference Include="..\Tellurian.Geospatial\Tellurian.Geospatial.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DistanceCalculators\" />
+  </ItemGroup>
+
 </Project>

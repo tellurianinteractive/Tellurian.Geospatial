@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial
 {
@@ -22,9 +23,14 @@ namespace Tellurian.Geospatial
             if (degrees < min || degrees > max) throw new ArgumentOutOfRangeException(nameof(degrees));
             _Degrees = degrees;
         }
+        [JsonConstructor]
+        public Latitude(double degrees) : this(degrees, -90, 90) { }
 
+        [JsonPropertyName("degrees")]
         public double Degrees => _Degrees;
+        [JsonIgnore]
         public double Radians => Degrees * Math.PI / 180;
+        [JsonIgnore]
         public bool IsZero => Math.Abs(_Degrees) < CompareTolerance;
 
         public static bool operator ==(in Latitude one, in Latitude another) => one.Equals(another);

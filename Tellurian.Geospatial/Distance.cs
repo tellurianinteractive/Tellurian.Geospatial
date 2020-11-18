@@ -2,6 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
+using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial
 {
@@ -18,16 +19,18 @@ namespace Tellurian.Geospatial
         public static Distance FromMeters(double meters) => new Distance(meters);
         public static Distance FromKilometers(double kilometers) => new Distance(kilometers * 1000);
 
-        [SuppressMessage("Globalization", "CA1303:Do not pass literals as localized parameters",
-            Justification = "Only english is supported.")]
-        private Distance(in double meters)
+        [JsonConstructor]
+        public Distance(double meters)
         {
             if (meters < 0) throw new ArgumentOutOfRangeException(nameof(meters), "A distance must be zero or positive.");
             _Meters = meters;
         }
 
+        [JsonPropertyName("meters")]
         public double Meters => _Meters;
+        [JsonIgnore]
         public double Kilometers => Meters / 1000;
+        [JsonIgnore]
         public bool IsZero => Meters < CompareTolerance;
 
         public static bool operator ==(in Distance one, in Distance another) => one.Equals(another);

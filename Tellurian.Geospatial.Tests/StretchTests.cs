@@ -54,10 +54,18 @@ namespace Tellurian.Geospatial.Tests
         }
 
         [TestMethod]
-        public void SerializationAndDeserializationWorks()
+        public void XmlSerializationAndDeserializationWorks()
         {
             var target = Stretch.Between(Position.FromDegrees(58.1, 11.9), Position.FromDegrees(59.1, 12.9));
-            var actual = SerializationTester<Stretch>.SerializeAndDeserialize(target);
+            var actual = SerializationTester<Stretch>.XmlSerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
+        public void JsonSerializationAndDeserializationWorks()
+        {
+            var target = Stretch.Between(Position.FromDegrees(58.1, 11.9), Position.FromDegrees(59.1, 12.9));
+            var actual = SerializationTester<Stretch>.JsonSerializeAndDeserialize(target);
             Assert.AreEqual(target, actual);
         }
 

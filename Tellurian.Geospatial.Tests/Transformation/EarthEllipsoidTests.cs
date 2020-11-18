@@ -1,9 +1,10 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Tellurian.Geospatial.Tests;
 
 namespace Tellurian.Geospatial.Transformation.Tests
 {
     [TestClass]
-    public class EllipsoidTests
+    public class EarthEllipsoidTests
     {
         const double Tolerance = 0.000000000001;
 
@@ -42,5 +43,22 @@ namespace Tellurian.Geospatial.Transformation.Tests
             Assert.AreEqual(expectedSemiMinorAxis, actual.SemiMinorAxis, Tolerance);
             Assert.AreEqual(expectedFlattening, actual.Flattening, Tolerance);
         }
+
+        [TestMethod]
+        public void XmlSerializationAndDeserializationWorks()
+        {
+            var target = Ellipsoids.Wgs84;
+            var actual = SerializationTester<EarthEllipsoid>.XmlSerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
+        [TestMethod]
+        public void JsonSerializationAndDeserializationWorks()
+        {
+            var target = Ellipsoids.Wgs84;
+            var actual = SerializationTester<EarthEllipsoid>.JsonSerializeAndDeserialize(target);
+            Assert.AreEqual(target, actual);
+        }
+
     }
 }
