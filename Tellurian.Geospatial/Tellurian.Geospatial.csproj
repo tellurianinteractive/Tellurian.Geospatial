@@ -6,7 +6,7 @@
     <Company>Tellurian</Company>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Object model for geospatial calculations and transformations.</Description>
-    <Version>2.1.0</Version>
+    <Version>2.2.0</Version>
     <PackageReleaseNotes>2.2.0 Added nullable notations and converted some types to records.</PackageReleaseNotes>
     <Copyright>Stefan Fjällemark</Copyright>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
