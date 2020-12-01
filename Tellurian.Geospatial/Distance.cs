@@ -12,10 +12,6 @@ namespace Tellurian.Geospatial
         private const double CompareTolerance = 0.001;
 
         public static Distance Zero => FromMeters(0);
-
-        [DataMember(Name = "Meters")]
-        private readonly double _Meters;
-
         public static Distance FromMeters(double meters) => new Distance(meters);
         public static Distance FromKilometers(double kilometers) => new Distance(kilometers * 1000);
 
@@ -23,11 +19,12 @@ namespace Tellurian.Geospatial
         public Distance(double meters)
         {
             if (meters < 0) throw new ArgumentOutOfRangeException(nameof(meters), "A distance must be zero or positive.");
-            _Meters = meters;
+            Meters = meters;
         }
 
+        [DataMember(Name = "Meters")]
         [JsonPropertyName("meters")]
-        public double Meters => _Meters;
+        public double Meters { get; init; }
         [JsonIgnore]
         public double Kilometers => Meters / 1000;
         [JsonIgnore]
@@ -45,7 +42,7 @@ namespace Tellurian.Geospatial
 
         public bool Equals(Distance other) => Math.Abs(other.Meters - Meters) < CompareTolerance;
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (!(obj is Distance)) return false;
             return Equals((Distance)obj);

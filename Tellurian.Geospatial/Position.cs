@@ -20,36 +20,32 @@ namespace Tellurian.Geospatial
     [DataContract]
     public readonly struct Position : IEquatable<Position>
     {
-        [DataMember(Name = "Latitude")]
-        private readonly Latitude _Latitude;
-
-        [DataMember(Name = "Longitude")]
-        private readonly Longitude _Longitude;
-
         public static Position Origo => FromDegrees(0, 0);
-
         public static Position FromDegrees(double latitude, double longitude) => new Position(latitude, longitude);
-
         public static Position FromRadians(double latitude, double longitude) => new Position(latitude * 180 / Math.PI, longitude * 180 / Math.PI);
 
         private Position(in double latitude, in double longitude)
         {
-            _Latitude = Latitude.FromDegrees(latitude);
-            _Longitude = Longitude.FromDegrees(longitude);
+            Latitude = Latitude.FromDegrees(latitude);
+            Longitude = Longitude.FromDegrees(longitude);
         }
 
         [JsonConstructor]
         public Position(Latitude latitude, Longitude longitude)
         {
-            _Longitude = longitude;
-            _Latitude = latitude;
+            Longitude = longitude;
+            Latitude = latitude;
         }
+
+        [DataMember(Name = "Latitude")]
         [JsonPropertyName("latitude")]
-        public Latitude Latitude => _Latitude;
+        public Latitude Latitude { get; init; }
+
+        [DataMember(Name = "Longitude")]
         [JsonPropertyName("longitude")]
-        public Longitude Longitude => _Longitude;
+        public Longitude Longitude { get; init; }
         [JsonIgnore]
-        public bool IsOrigo => _Latitude.IsZero && _Longitude.IsZero;
+        public bool IsOrigo => Latitude.IsZero && Longitude.IsZero;
 
         /// <summary>
         /// Calculate the destina­tion point travelling along a (shortest distance) great circle arc.
@@ -73,7 +69,7 @@ namespace Tellurian.Geospatial
             return FromRadians(φ2, λ2);
         }
 
-        public  bool IsBetween(Position before, Position after)
+        public bool IsBetween(Position before, Position after)
         {
             var s = Stretch.Between(before, after);
             var s1 = Stretch.Between(before, this);
@@ -86,11 +82,11 @@ namespace Tellurian.Geospatial
         public static bool operator ==(in Position one, in Position another) => one.Equals(another);
         public static bool operator !=(in Position one, in Position another) => !one.Equals(another);
         public bool Equals(Position other) => Latitude == other.Latitude && Longitude == other.Longitude;
-        public override bool Equals(object obj) => obj is Position position && Equals(position);
+        public override bool Equals(object? obj) => obj is Position position && Equals(position);
 
         public override string ToString() => string.Format(CultureInfo.InvariantCulture, "{0},{1}", Latitude.Degrees, Longitude.Degrees);
 
         [ExcludeFromCodeCoverage]
-        public override int GetHashCode() => (_Latitude.GetHashCode() / 2) + (_Longitude.GetHashCode() / 2);
+        public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
     }
 }

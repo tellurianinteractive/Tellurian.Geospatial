@@ -10,7 +10,7 @@ namespace Tellurian.Geospatial.Transformation
     /// References: https://en.wikipedia.org/wiki/Earth_ellipsoid
     /// </remarks>
     [DataContract]
-    public record EarthEllipsoid
+    public struct EarthEllipsoid
     {
         public static EarthEllipsoid CreateFromSemiAxes(double semiMajorAxis, double semiMinorAxis) => 
             new EarthEllipsoid { SemiMajorAxis = semiMajorAxis, SemiMinorAxis = semiMinorAxis };

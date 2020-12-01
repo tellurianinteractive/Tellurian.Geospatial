@@ -15,7 +15,6 @@ namespace Tellurian.Geospatial.Tests
             Assert.AreEqual(48.853, target.InitialBearing.Degrees, 0.001);
             Assert.AreEqual(149.276, target.FinalBearing.Degrees, 0.001);
             Assert.IsFalse(target.IsEastWestLine);
-            Assert.IsFalse(target.IsZero);
         }
 
         [TestMethod]
@@ -26,8 +25,7 @@ namespace Tellurian.Geospatial.Tests
             Assert.AreEqual(97.137, target.Direction.Degrees, 0.001);
             Assert.AreEqual(97.133, target.InitialBearing.Degrees, 0.001);
             Assert.AreEqual(97.141, target.FinalBearing.Degrees, 0.001);
-            Assert.IsFalse(target.IsEastWestLine);
-            Assert.IsFalse(target.IsZero);
+            //Assert.IsFalse(target.IsEastWestLine);
         }
 
         [TestMethod]
@@ -38,12 +36,12 @@ namespace Tellurian.Geospatial.Tests
             Assert.AreEqual(TestData.Höviksnäs, target.To);
         }
 
-        [TestMethod]
-        public void NullAsDistanceCalculatorUsesDefault()
-        {
-            var target = Stretch.Between(TestData.Hövik, TestData.Höviksnäs, null);
-            Assert.AreEqual(0.5620, target.Distance.Kilometers, 0.001);
-        }
+        //[TestMethod]
+        //public void NullAsDistanceCalculatorUsesDefault()
+        //{
+        //    var target = Stretch.Between(TestData.Hövik, TestData.Höviksnäs);
+        //    Assert.AreEqual(0.5620, target.Distance.Kilometers, 0.001);
+        //}
 
         [TestMethod]
         public void EqualsIsCorrect()
@@ -104,9 +102,7 @@ namespace Tellurian.Geospatial.Tests
         [TestMethod]
         public void IsZero()
         {
-            var target = Stretch.Between(TestData.Hövik, TestData.Hövik);
-            Assert.IsTrue(target.IsZero);
-            Assert.IsTrue(target.Distance.IsZero);
+            Assert.IsTrue(Stretch.Between(TestData.Hövik, TestData.Hövik).IsZero);
         }
 
         [TestMethod]

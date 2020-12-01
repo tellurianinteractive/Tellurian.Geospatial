@@ -11,6 +11,7 @@ Types for basic calculations of dictances etc. and building blocks for more adva
 * **Position** with **Latitude** and **Longitude** representing a two dimensional location on earth surface. The user must decide on which datum a position is expressed, for exampe WGS 84, ETRS 89 or similar. 
 * **Speed** representing a zero or positive speed in m/s and km/h.
 * **Stretch** between two **Position**s representing propertes for stretches on earth surface, ie. *distance*, *direction*, *on track distance* etc.
+* **Vector** represening a **Distance** with an **Angle**.
 
 Each of these objects has value safe initializers and useful methods for calculating distances, angles etc. 
 

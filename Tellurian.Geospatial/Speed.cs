@@ -10,23 +10,21 @@ namespace Tellurian.Geospatial
     public readonly struct Speed : IEquatable<Speed>, IComparable<Speed>
     {
         private const double CompareTolerance = 0.01;
-
-        [DataMember(Name = "MetersPerSecond")]
-        private readonly double _MetersPerSecond;
-
         public static Speed Zero { get; } = new Speed(0);
-
         public static Speed FromMetersPerSecond(double metersPerSecond) => new Speed(metersPerSecond);
         public static Speed FromKilometersPerHour(double kilometersPerHour) => new Speed(kilometersPerHour / 3.6);
+        public static Speed FromDistanceAndDuration(Distance distance, TimeSpan duration) => 
+            duration.TotalSeconds > 0 ? new Speed(distance.Meters / duration.TotalSeconds) : Zero;
 
         [JsonConstructor]
         public Speed(double metersPerSecond)
         {
             if (metersPerSecond < 0) throw new ArgumentOutOfRangeException(nameof(metersPerSecond), "Speed must be zero or positive.");
-            _MetersPerSecond = metersPerSecond;
+            MetersPerSecond = metersPerSecond;
         }
+        [DataMember(Name = "MetersPerSecond")]
         [JsonPropertyName("metersPerSecond")]
-        public double MetersPerSecond => _MetersPerSecond;
+        public double MetersPerSecond { get; init; }
         [JsonIgnore]
         public double KilometersPerHour => MetersPerSecond * 3.6;
         [JsonIgnore]
@@ -45,7 +43,7 @@ namespace Tellurian.Geospatial
         public static Speed Add(Speed one, Speed another) => one + another;
 
         public bool Equals(Speed other) => Math.Abs(MetersPerSecond - other.MetersPerSecond) <= CompareTolerance;
-        public override bool Equals(object obj) => obj is Speed speed && Equals(speed);
+        public override bool Equals(object? obj) => obj is Speed speed && Equals(speed);
         public override string ToString() => string.Format(CultureInfo.InvariantCulture, "{0:F1}m/s", MetersPerSecond);
 
         [ExcludeFromCodeCoverage]

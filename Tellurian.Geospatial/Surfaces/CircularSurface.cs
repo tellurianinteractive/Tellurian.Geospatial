@@ -1,4 +1,5 @@
-﻿using System.Runtime.Serialization;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial.Surfaces
@@ -11,6 +12,6 @@ namespace Tellurian.Geospatial.Surfaces
         [DataMember]
         public Distance Radius { get; private set; }
         public override bool Includes(Position position) => Stretch.Between(ReferencePosition, position).Distance <= Radius;
-        public override bool Equals(Surface me) => me is CircularSurface other && base.Equals(other) && Radius.Equals(other.Radius);       
+        public override bool Equals( Surface? me) => me is CircularSurface other && base.Equals(other) && Radius.Equals(other.Radius);       
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 namespace Tellurian.Geospatial.Surfaces
@@ -21,8 +22,10 @@ namespace Tellurian.Geospatial.Surfaces
         /// <param name="position"></param>
         /// <returns><see cref="true"/> if within border or on border of the <see cref="Surface"/></returns>
         public abstract bool Includes(Position position);
-        public override bool Equals(object obj) => obj is Surface other && Equals(other);
-        public virtual bool Equals(Surface other) => other.ReferencePosition.Equals(ReferencePosition);
-        public override int GetHashCode() => ReferencePosition.GetHashCode();     
+        public override bool Equals(object? obj) => obj is Surface other && Equals(other);
+        public virtual bool Equals(Surface? other) => other is not null && other.ReferencePosition.Equals(ReferencePosition);
+        public override int GetHashCode() => ReferencePosition.GetHashCode();
+
+        
     }
 }

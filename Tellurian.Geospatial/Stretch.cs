@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Tellurian.Geospatial.DistanceCalculators;
@@ -18,15 +17,9 @@ namespace Tellurian.Geospatial
     /// https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html 
     /// </remarks>
     [DataContract]
-    public struct Stretch : IEquatable<Stretch>
+    public sealed record Stretch 
     {
         private static readonly IDistanceCalculator DefaultDistanceCalculator = new HaversineDistanceCalculator();
-
-        [DataMember(Name = "From", IsRequired = true, Order = 1)]
-        private readonly Position _From;
-
-        [DataMember(Name = "To", IsRequired = true, Order = 2)]
-        private readonly Position _To;
 
         private readonly IDistanceCalculator _DistanceCalculator;
         private Distance? _Distance;
@@ -35,71 +28,70 @@ namespace Tellurian.Geospatial
         private Angle? _Direction;
 
         public static Stretch Between(in Position from, in Position to) => new Stretch(from, to);
-        public static Stretch Between(in Position from, in Position to, in IDistanceCalculator distanceCalculator) => new Stretch(from, to, distanceCalculator);
+        public static Stretch Between(in Position from, in Position to, IDistanceCalculator distanceCalculator) => new Stretch(from, to, distanceCalculator);
         
         [JsonConstructor]
         public Stretch(Position from, Position to) : this(from, to, DefaultDistanceCalculator) { }
 
-        private Stretch(Position from, Position to, IDistanceCalculator distanceCalculator)
+        private Stretch(in Position from, in Position to, IDistanceCalculator distanceCalculator)
         {
-            _From = from;
-            _To = to;
+            From = from;
+            To = to;
             _DistanceCalculator = distanceCalculator ?? DefaultDistanceCalculator;
             _Direction = null;
             _Distance = null;
             _InitialBearing = null;
             _FinalBearing = null;
         }
+
+        [DataMember(Name = "From", IsRequired = true, Order = 1)]
         [JsonPropertyName("from")]
-        public Position From => _From;
+        public Position From { get; init; }
+        [DataMember(Name = "To", IsRequired = true, Order = 2)]
         [JsonPropertyName("to")]
-        public Position To => _To;
+        public Position To { get; init; }
+
         [JsonIgnore]
         public bool IsZero => From == To;
         [JsonIgnore]
-        public Angle Direction => _Direction ?? (_Direction = RhumbBearing()).Value;
+        public Angle Direction => IsZero ? Angle.Undefined : _Direction ?? (_Direction = RhumbBearing()).Value;
         [JsonIgnore]
-        public Angle InitialBearing => _InitialBearing ?? (_InitialBearing = GetInitialBearing()).Value;
+        public Angle InitialBearing => IsZero ? Angle.Undefined : _InitialBearing ?? (_InitialBearing = GetInitialBearing()).Value;
         [JsonIgnore]
-        public Angle FinalBearing => _FinalBearing ?? (_FinalBearing = Angle.FromDegrees((Inverse.InitialBearing.Degrees + 180) % 360)).Value;
+        public Angle FinalBearing => IsZero ? Angle.Undefined : _FinalBearing ?? (_FinalBearing = Angle.FromDegrees((Inverse.InitialBearing.Degrees + 180) % 360)).Value;
         [JsonIgnore]
-        public Distance Distance => _Distance ?? (_Distance = _DistanceCalculator.GetDistance(From, To)).Value;
+        public Distance Distance => IsZero ? Distance.Zero : _Distance ?? (_Distance = _DistanceCalculator.GetDistance(From, To)).Value;
         [JsonIgnore]
-        public Stretch Inverse => new Stretch(_To, _From);
+        public Stretch Inverse => IsZero ? this : new Stretch(To, From);
         [JsonIgnore]
-        public bool IsEastWestLine => _From.Latitude.Equals(_To.Latitude);
+        public bool IsEastWestLine => !IsZero && From.Latitude.Equals(To.Latitude);
 
-        public Distance GetDistance(IDistanceCalculator useDistanceCalculator) => useDistanceCalculator.GetDistance(From, To);
+        public Distance GetDistance(IDistanceCalculator usingDistanceCalculator) => usingDistanceCalculator.GetDistance(From, To);
 
         private Angle GetInitialBearing()
         {
-            var lat1 = _From.Latitude.Radians;
-            var lat2 = _To.Latitude.Radians;
-            var dLon = _To.Longitude.Radians - _From.Longitude.Radians;
+            var lat1 = From.Latitude.Radians;
+            var lat2 = To.Latitude.Radians;
+            var dLon = To.Longitude.Radians - From.Longitude.Radians;
             var y = Sin(dLon) * Cos(lat2);
             var x = (Cos(lat1) * Sin(lat2)) - (Sin(lat1) * Cos(lat2) * Cos(dLon));
-            var b = Math.Atan2(y, x);
+            var b = Atan2(y, x);
             return Angle.FromRadians((b + PI2) % PI2);
         }
 
         internal Angle RhumbBearing()
         {
-            var lat2 = _To.Latitude.Radians;
-            var lat1 = _From.Latitude.Radians;
+            var lat2 = To.Latitude.Radians;
+            var lat1 = From.Latitude.Radians;
             var dPhi = Log(Tan((lat2 / 2) + (Math.PI / 4)) / Tan((lat1 / 2) + (Math.PI / 4)));
-            var dLon = _To.Longitude.Radians - _From.Longitude.Radians;
+            var dLon = To.Longitude.Radians - From.Longitude.Radians;
             var b = Atan2(dLon, dPhi);
             return Angle.FromRadians((b + PI2) % PI2);
         }
 
-        public override bool Equals(object obj) => obj is Stretch stretch && Equals(stretch);
-        public bool Equals(Stretch other) => From.Equals(other.From) && To.Equals(other.To);
-
-        public static bool operator ==(in Stretch value1, in Stretch value2) => value1.Equals(value2);
-        public static bool operator !=(in Stretch value1, in Stretch value2) => !value1.Equals(value2);
-
-        [ExcludeFromCodeCoverage]
-        public override int GetHashCode() => From.GetHashCode();
+        public override string ToString() => $"From {From} to {To}";
+        public bool Equals(Stretch? other) => other is not null && other.From.Equals(From) && other.To.Equals(To);
+        public override int GetHashCode() => HashCode.Combine(From, To);
     }
 
     public static class StretchExtensions

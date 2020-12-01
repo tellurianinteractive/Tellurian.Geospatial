@@ -24,7 +24,7 @@ namespace Tellurian.Geospatial.Transformation
         public double Northing => _Northing;
 
         public bool Equals(GridCoordinate other) => Northing == other.Northing && Easting == other.Easting;
-        public override bool Equals(object obj) => obj is GridCoordinate other && Equals(other);
+        public override bool Equals(object? obj) => obj is GridCoordinate other && Equals(other);
 
 
         public static bool operator ==(in GridCoordinate one, in GridCoordinate another) => one.Equals(another);

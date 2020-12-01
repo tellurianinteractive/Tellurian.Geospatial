@@ -5,9 +5,9 @@ using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial.Tests
 {
-    static class SerializationTester<T> 
+    static class SerializationTester<T>
     {
-        public static T XmlSerializeAndDeserialize(T value)
+        public static T? XmlSerializeAndDeserialize(T value)
         {
             using var m = new MemoryStream();
             var s = new DataContractSerializer(typeof(T));
@@ -17,7 +17,7 @@ namespace Tellurian.Geospatial.Tests
             return (T)s.ReadObject(m);
         }
 
-        public static T JsonSerializeAndDeserialize(T value)
+        public static T? JsonSerializeAndDeserialize(T value)
         {
             var json = JsonSerializer.Serialize(value, Options);
             return JsonSerializer.Deserialize<T>(json, Options);
@@ -26,7 +26,8 @@ namespace Tellurian.Geospatial.Tests
         private static JsonSerializerOptions Options =>
             new JsonSerializerOptions()
             {
-                 // Good that serialization and deserialization does not require special options.
+                // Good that serialization and deserialization does not require special options.
             };
     }
 }
+

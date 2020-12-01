@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
@@ -44,6 +45,6 @@ namespace Tellurian.Geospatial.Surfaces
             position.Latitude <= _BorderPositions.MostNorthern() ||
             position.Latitude >= _BorderPositions.MostSouthern();
 
-        public override bool Equals(Surface me) => me is PolygonalSurface other && base.Equals(other) && Enumerable.SequenceEqual(BorderPositions, other.BorderPositions);
+        public override bool Equals(Surface? me) => me is PolygonalSurface other && base.Equals(other) && Enumerable.SequenceEqual(BorderPositions, other.BorderPositions);
     }
 }
