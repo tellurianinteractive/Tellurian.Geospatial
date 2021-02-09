@@ -70,23 +70,23 @@ namespace Tellurian.Geospatial
 
         private Angle GetInitialBearing()
         {
-            var lat1 = From.Latitude.Radians;
-            var lat2 = To.Latitude.Radians;
-            var dLon = To.Longitude.Radians - From.Longitude.Radians;
-            var y = Sin(dLon) * Cos(lat2);
-            var x = (Cos(lat1) * Sin(lat2)) - (Sin(lat1) * Cos(lat2) * Cos(dLon));
+            var (φ1, λ1) = From.RadianCoordinates;
+            var (φ2, λ2) = To.RadianCoordinates;
+            var Δλ = λ2 - λ1;
+            var y = Sin(Δλ) * Cos(φ2);
+            var x = (Cos(φ1) * Sin(φ2)) - (Sin(φ1) * Cos(φ2) * Cos(Δλ));
             var b = Atan2(y, x);
-            return Angle.FromRadians((b + PI2) % PI2);
+            return Angle.FromRadians((b + Π2) % Π2);
         }
 
         internal Angle RhumbBearing()
         {
-            var lat2 = To.Latitude.Radians;
-            var lat1 = From.Latitude.Radians;
-            var dPhi = Log(Tan((lat2 / 2) + (Math.PI / 4)) / Tan((lat1 / 2) + (Math.PI / 4)));
-            var dLon = To.Longitude.Radians - From.Longitude.Radians;
-            var b = Atan2(dLon, dPhi);
-            return Angle.FromRadians((b + PI2) % PI2);
+            var φ2 = To.Latitude.Radians;
+            var φ1 = From.Latitude.Radians;
+            var Δλ = To.Longitude.Radians - From.Longitude.Radians;
+            var ΔΦ = Log(Tan((φ2 / 2) + (Π / 4)) / Tan((φ1 / 2) + (Π / 4)));
+            var b = Atan2(Δλ, ΔΦ);
+            return Angle.FromRadians((b + Π2) % Π2);
         }
 
         public override string ToString() => $"From {From} to {To}";
@@ -105,10 +105,10 @@ namespace Tellurian.Geospatial
         {
             const double R = EarthMeanRadiusMeters;
             var s = Stretch.Between(me.From, at);
-            var δ13 = s.Distance.Meters;
-            var θ13 = s.InitialBearing.Radians;
-            var θ12 = me.InitialBearing.Radians;
-            var d = Asin(Sin(δ13 / R) * Sin(θ13 - θ12)) * R;
+            var δ = s.Distance.Meters;
+            var θ1 = s.InitialBearing.Radians;
+            var θ2 = me.InitialBearing.Radians;
+            var d = Asin(Sin(δ / R) * Sin(θ1 - θ2)) * R;
             return Distance.FromMeters(Abs(d));
         }
 
@@ -131,9 +131,9 @@ namespace Tellurian.Geospatial
         ///     ''' <remarks></remarks>
         public static Angle MinAngle(this Stretch me, Position at)
         {
-            var a1 = Stretch.Between(at, me.From).Direction;
-            var a2 = Stretch.Between(at, me.To).Direction;
-            return a1.Min(a2);
+            var θ1 = Stretch.Between(at, me.From).Direction;
+            var θ2 = Stretch.Between(at, me.To).Direction;
+            return θ1.Min(θ2);
         }
 
         /// <summary>
@@ -146,10 +146,10 @@ namespace Tellurian.Geospatial
         {
             const double r = EarthMeanRadiusMeters / 1000;
             var s = Stretch.Between(me.From, at);
-            var d13 = s.Distance.Meters;
-            var dXt = me.CrossTrackDistance(at).Meters;
-            var d = Acos(Cos(d13 / r) / Cos(dXt / r)) * r;
-            return Distance.FromMeters(Abs(d));
+            var δ = s.Distance.Meters;
+            var Δδ = me.CrossTrackDistance(at).Meters;
+            var δt = Acos(Cos(δ / r) / Cos(Δδ / r)) * r;
+            return Distance.FromMeters(Abs(δt));
         }
     }
 }

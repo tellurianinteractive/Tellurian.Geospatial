@@ -23,6 +23,8 @@ namespace Tellurian.Geospatial.Transformation
         [JsonPropertyName("northing")]
         public double Northing => _Northing;
 
+        public (double X, double Y) Coordinates => (Northing, Easting);
+
         public bool Equals(GridCoordinate other) => Northing == other.Northing && Easting == other.Easting;
         public override bool Equals(object? obj) => obj is GridCoordinate other && Equals(other);
 

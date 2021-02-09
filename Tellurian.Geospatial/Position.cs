@@ -20,7 +20,8 @@ namespace Tellurian.Geospatial
     [DataContract]
     public readonly struct Position : IEquatable<Position>
     {
-        public static Position Origo => FromDegrees(0, 0);
+        private static  Position _Origo = FromDegrees(0, 0);
+        public static Position Origo => _Origo;
         public static Position FromDegrees(double latitude, double longitude) => new Position(latitude, longitude);
         public static Position FromRadians(double latitude, double longitude) => new Position(latitude * 180 / Math.PI, longitude * 180 / Math.PI);
 
@@ -47,6 +48,8 @@ namespace Tellurian.Geospatial
         [JsonIgnore]
         public bool IsOrigo => Latitude.IsZero && Longitude.IsZero;
 
+        public (double φ, double λ) RadianCoordinates => (Latitude.Radians, Longitude.Radians);
+
         /// <summary>
         /// Calculate the destina­tion point travelling along a (shortest distance) great circle arc.
         /// </summary>
@@ -58,14 +61,13 @@ namespace Tellurian.Geospatial
         /// </remarks>
         public Position Destination(in Angle initialBearing, in Distance distance)
         {
-            var φ1 = Latitude.Radians;
-            var λ1 = Longitude.Radians;
-            var δ = initialBearing.Radians;
             const double R = EarthMeanRadiusMeters;
+            var (φ, λ) = RadianCoordinates;
+            var δ = initialBearing.Radians;
             var d = distance.Meters;
 
-            var φ2 = Asin((Sin(φ1) * Cos(d / R)) + (Cos(φ1) * Sin(d / R) * Cos(δ)));
-            var λ2 = λ1 + Atan2(Sin(δ) * Sin(d / R) * Cos(φ1), Cos(d / R) - (Sin(φ1) * Sin(φ2)));
+            var φ2 = Asin((Sin(φ) * Cos(d / R)) + (Cos(φ) * Sin(d / R) * Cos(δ)));
+            var λ2 = λ + Atan2(Sin(δ) * Sin(d / R) * Cos(φ), Cos(d / R) - (Sin(φ) * Sin(φ2)));
             return FromRadians(φ2, λ2);
         }
 

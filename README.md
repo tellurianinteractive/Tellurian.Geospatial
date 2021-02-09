@@ -21,13 +21,23 @@ Types for modelling surfaces. Added from release 2.1.0.
 * **PolygonalSurface** representing a *ReferencePosition* sourrounded by a polygonal border.
 
 Surfaces has a *Includes(Position)* method that tells if a *Position* lies on or within the surface's border. 
+You can create your own by derive from **Surface** base class.
 
 ## Namespace *Tellurian.Geospatial.Transform*
 Types and methods for transforming between cartesian and planar coordinates.
-* **EarthEllipsoid** represents the form of the earth. There are a few preconfigured earth ellipsiods: *Grs80* and *Wgs84*. You can easy create other.
-* **MapProjection** represents how coordinates are mapped to the earth.  There are a few preconfigured: *Utm32-35*, and specific for Sweden: *Sweref99TM* and *Rt90*.
+* **EarthEllipsoid** represents the form of the earth. There are a few preconfigured, see below. You can easy create other.
+* **MapProjection** represents how coordinates are mapped to the earth.  There are a few preconfigured, see below. You can easy create other.
 * **GridCoordinate** represents a planar coordinate.
 * **GaussKrügerTransformer** uses the objects above to transform between cartesian and planar coordinates.
+
+There are built-in *map projections* for planar coordinates:
+* **MapProjections.UTMxx**, where 'xx' is any of zone 32-35 used in Europe.
+* **MapProjections.Sweref99TM** and **MapProjections.RT90** used in Sweden.
+
+There are built-in *ellipsoids*:
+* **Ellipsoids.WGS84** used for most GPS-devices.
+* **Ellipsoids.GRS80** used for many transformations to/from planar coordinates.
+* **Ellipsoids.Hayford1910** 
 
 ## Namespace *Tellurian.Geospatial.DistanceCalculators*
 The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding  precision and speed of calculation. 

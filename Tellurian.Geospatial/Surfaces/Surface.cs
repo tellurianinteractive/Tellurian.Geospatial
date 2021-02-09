@@ -12,7 +12,7 @@ namespace Tellurian.Geospatial.Surfaces
         protected Surface(Position referencePosition) => ReferencePosition = referencePosition;
         /// <summary>
         /// The <see cref="ReferencePosition"/> is the single point represetation of the <see cref="Surface"/>.
-        /// It can be used in large zoom levels and also nto calculare distances between <see cref="Surface">surfaces</see>.
+        /// It can be used in large zoom levels and also to calculare distances between <see cref="Surface">surfaces</see>.
         /// </summary>
         [DataMember]
         public Position ReferencePosition { get; private set; }

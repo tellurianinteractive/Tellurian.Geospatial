@@ -41,12 +41,7 @@ namespace Tellurian.Geospatial
         public static Distance operator -(in Distance one, in double value) => FromMeters(one.Meters - value > 0 ? value : 0);
 
         public bool Equals(Distance other) => Math.Abs(other.Meters - Meters) < CompareTolerance;
-
-        public override bool Equals(object? obj)
-        {
-            if (!(obj is Distance)) return false;
-            return Equals((Distance)obj);
-        }
+        public override bool Equals(object? obj) => obj is Distance d && Equals(d);
 
         public override string ToString() => string.Format(CultureInfo.InvariantCulture, "{0}m", Meters);
 

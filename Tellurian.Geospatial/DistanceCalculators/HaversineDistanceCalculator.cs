@@ -16,16 +16,14 @@ namespace Tellurian.Geospatial.DistanceCalculators
     /// </remarks>
     public sealed class HaversineDistanceCalculator : IDistanceCalculator
     {
-        public Distance GetDistance(Position from, Position to)
+        public Distance GetDistance(in Position from, in Position to)
         {
             const double r = Constants.EarthMeanRadiusMeters;
-            var lat1 = from.Latitude.Radians;
-            var lon1 = from.Longitude.Radians;
-            var lat2 = to.Latitude.Radians;
-            var lon2 = to.Longitude.Radians;
-            var ΔLat = lat2 - lat1;
-            var ΔLon = lon2 - lon1;
-            var a = (Sin(ΔLat / 2) * Sin(ΔLat / 2)) + (Cos(lat1) * Cos(lat2) * Sin(ΔLon / 2) * Sin(ΔLon / 2));
+            var (φ1, λ1) = from.RadianCoordinates;
+            var (φ2, λ2) = to.RadianCoordinates;
+            var Δφ = φ2 - φ1;
+            var Δλ = λ2 - λ1;
+            var a = (Sin(Δφ / 2) * Sin(Δφ / 2)) + (Cos(φ1) * Cos(φ2) * Sin(Δλ / 2) * Sin(Δλ / 2));
             var c = 2 * Atan2(Sqrt(a), Sqrt(1 - a));
             return Distance.FromMeters(r * c);
         }

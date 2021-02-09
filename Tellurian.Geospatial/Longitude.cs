@@ -45,11 +45,7 @@ namespace Tellurian.Geospatial
 
         public bool Equals(Longitude other) => CompareTo(other) == 0;
 
-        public override bool Equals(object? obj)
-        {
-            if (!(obj is Longitude)) return false;
-            return Equals((Longitude)obj);
-        }
+        public override bool Equals(object? obj) => obj is Longitude longitude && Equals(longitude);
 
         public override string ToString() => string.Format(CultureInfo.CurrentCulture, "{0:F1}", Degrees);
 

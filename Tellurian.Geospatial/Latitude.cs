@@ -42,14 +42,8 @@ namespace Tellurian.Geospatial
             (Degrees < other.Degrees) && other.Degrees - Degrees > CompareTolerance ? -1 :
             ((Degrees > other.Degrees) && Degrees - other.Degrees > CompareTolerance ? 1 : 0);
 
-        public override bool Equals(object? obj)
-        {
-            if (!(obj is Latitude)) return false;
-            Latitude other = (Latitude)obj;
-            return Equals(other);
-        }
-
         public bool Equals(Latitude other) => CompareTo(other) == 0;
+        public override bool Equals(object? obj) => obj is Latitude longitude && Equals(longitude);
 
         public override string ToString() => string.Format(CultureInfo.CurrentCulture, "{0:F1}", Degrees);
 

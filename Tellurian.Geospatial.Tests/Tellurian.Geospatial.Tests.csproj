@@ -3,7 +3,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <IsPackable>false</IsPackable>
     <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <Version>2.2.0</Version>
+    <Version>2.3.0</Version>
     <LangVersion>latest</LangVersion>
     <Nullable>enable</Nullable>
   </PropertyGroup>
