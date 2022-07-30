@@ -7,7 +7,6 @@
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<DeterministicSourcePaths>false</DeterministicSourcePaths>
 	</PropertyGroup>
 
 	<ItemGroup>
