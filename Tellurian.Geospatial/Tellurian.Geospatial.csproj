@@ -1,32 +1,59 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
-    <PackageId>Tellurian.Geospatial</PackageId>
-    <Authors>Stefan Fjällemark</Authors>
-    <Company>Tellurian</Company>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Description>Object model for geospatial calculations and transformations.</Description>
-    <Version>2.3.0</Version>
-    <PackageReleaseNotes>2.2.0 Added nullable notations and converted some types to records.</PackageReleaseNotes>
-    <Copyright>Stefan Fjällemark</Copyright>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryUrl>https://github.com/fjallemark/Tellurian.Geospatial.git</RepositoryUrl>
-    <PackageProjectUrl>https://github.com/fjallemark/Tellurian.Geospatial</PackageProjectUrl>
-    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-    <RepositoryType>git</RepositoryType>
-    <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
-    <ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
-    <PackageTags>position latitude longitude speed distance spatial wgs84 grs80 utm sweref euref etrs map projection transformation</PackageTags>
-    <EnableNETAnalyzers>true</EnableNETAnalyzers>
-    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
-    <IncludeSymbols>true</IncludeSymbols>
-    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
-    <LangVersion>latest</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<AssemblyName>Tellurian.Geospatial</AssemblyName>
+		<RootNamespace>Tellurian.Geospatial</RootNamespace>
+		<PackageId>Tellurian.Geospatial</PackageId>
+		<Authors>Stefan Fjällemark</Authors>
+		<Company>Tellurian</Company>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<Description>Object model for geospatial calculations and transformations.</Description>
+		<Version>2.3.0</Version>
+		<PackageReleaseNotes>2.3.0 Upgraded to .NET 6. inclucing refactorings to use new C# features.</PackageReleaseNotes>
+		<Copyright>Stefan Fjällemark</Copyright>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryUrl>https://github.com/tellurianinteractive/Tellurian.Geospatial.git</RepositoryUrl>
+		<PackageProjectUrl>https://github.com/fjallemark/Tellurian.Geospatial</PackageProjectUrl>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<RepositoryType>git</RepositoryType>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
+		<PackageTags>position latitude longitude speed distance spatial wgs84 grs80 utm sweref euref etrs map projection transformation</PackageTags>
+		<EnableNETAnalyzers>true</EnableNETAnalyzers>
+		<EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Title></Title>
+		<NeutralLanguage>en-GB</NeutralLanguage>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<PackageIcon>Icon.png</PackageIcon>
+	</PropertyGroup>
+	<!--<ItemGroup>
+		<PackageReference Include="DotNet.ReproducibleBuilds" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+	</ItemGroup>-->
+	<ItemGroup>
+	  <Folder Include="Icons\" />
+	</ItemGroup>
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
+	<ItemGroup>
+	  <None Update="Icon.png">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.0.0" PrivateAssets="All" />
-  </ItemGroup>
+
 </Project>

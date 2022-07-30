@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 using Tellurian.Geospatial.DistanceCalculators;
@@ -17,21 +18,23 @@ namespace Tellurian.Geospatial
     /// https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html 
     /// </remarks>
     [DataContract]
-    public sealed record Stretch 
+    public sealed record Stretch
     {
         private static readonly IDistanceCalculator DefaultDistanceCalculator = new HaversineDistanceCalculator();
 
         private readonly IDistanceCalculator _DistanceCalculator;
+        // We cash properties that may be called more than one time.
         private Distance? _Distance;
         private Angle? _InitialBearing;
         private Angle? _FinalBearing;
         private Angle? _Direction;
 
-        public static Stretch Between(in Position from, in Position to) => new Stretch(from, to);
-        public static Stretch Between(in Position from, in Position to, IDistanceCalculator distanceCalculator) => new Stretch(from, to, distanceCalculator);
-        
+        public static Stretch Between(in Position from, in Position to) => new(from, to);
+        public static Stretch Between(in Position from, in Position to, IDistanceCalculator distanceCalculator) => new(from, to, distanceCalculator);
+
         [JsonConstructor]
         public Stretch(Position from, Position to) : this(from, to, DefaultDistanceCalculator) { }
+
 
         private Stretch(in Position from, in Position to, IDistanceCalculator distanceCalculator)
         {
@@ -62,11 +65,13 @@ namespace Tellurian.Geospatial
         [JsonIgnore]
         public Distance Distance => IsZero ? Distance.Zero : _Distance ?? (_Distance = _DistanceCalculator.GetDistance(From, To)).Value;
         [JsonIgnore]
-        public Stretch Inverse => IsZero ? this : new Stretch(To, From);
+        public Stretch Inverse => IsZero ? this : new(To, From);
         [JsonIgnore]
         public bool IsEastWestLine => !IsZero && From.Latitude.Equals(To.Latitude);
 
         public Distance GetDistance(IDistanceCalculator usingDistanceCalculator) => usingDistanceCalculator.GetDistance(From, To);
+
+
 
         private Angle GetInitialBearing()
         {
@@ -101,6 +106,7 @@ namespace Tellurian.Geospatial
         /// </summary>
         /// <param name="at"></param>
         /// <returns></returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Distance CrossTrackDistance(this Stretch me, Position at)
         {
             const double R = EarthMeanRadiusMeters;

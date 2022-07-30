@@ -1,8 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Linq;
-using Tellurian.Geospatial.Tests;
-
-namespace Tellurian.Geospatial.Surfaces.Tests
+﻿namespace Tellurian.Geospatial.Surfaces.Tests
 {
     [TestClass]
     public class PolygonalSurfaceTests
@@ -45,11 +41,13 @@ namespace Tellurian.Geospatial.Surfaces.Tests
         }
 
         // NOTE: For some reason record value equality does not work for PolygonalSurface
+#pragma warning disable IDE0051 // Remove unused private members
         private static bool AreValueEqual(PolygonalSurface a, PolygonalSurface b) =>
             a.ReferencePosition == b.ReferencePosition && Enumerable.SequenceEqual(a.BorderPositions, b.BorderPositions);
+#pragma warning restore IDE0051 // Remove unused private members
 
         private static PolygonalSurface TestPolygonalSurface => 
-            new PolygonalSurface(new[] {
+            new (new[] {
                 Position.FromDegrees(58.072363, 11.823334),
                 Position.FromDegrees(58.072232, 11.823686),
                 Position.FromDegrees(58.071205, 11.822731),

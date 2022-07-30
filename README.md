@@ -1,7 +1,7 @@
 # Tellurian.Geospatial
 Strongly typed object model for geospatial calculations and transformations.
 All types are also serializable with the *DataContractSerializer* and *System.Text.Json*.
-From release 2.0.0 this package only supports .NET 5+.
+From release 2.3.0 this package only supports .NET 6+.
 
 Released under MIT license 2020.
 ## Namespace *Tellurian.Geospatial*
