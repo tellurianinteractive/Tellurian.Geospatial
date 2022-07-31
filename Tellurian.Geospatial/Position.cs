@@ -90,4 +90,6 @@ public readonly struct Position : IEquatable<Position>
 
     [ExcludeFromCodeCoverage]
     public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
+
+    internal (double latitude, double longitude) Radians => (Latitude.Radians, Longitude.Radians);
 }

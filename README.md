@@ -3,7 +3,8 @@ Strongly typed object model for geospatial calculations and transformations.
 All types are also serializable with the *DataContractSerializer* and *System.Text.Json*.
 From release 2.3.0 this package only supports .NET 6+.
 
-Released under MIT license 2020.
+Released under MIT license 2022.
+
 ## Namespace *Tellurian.Geospatial*
 Types for basic calculations of dictances etc. and building blocks for more advanced spatial algorithms.
 * **Angle** representing 0 <= *degrees* < 360 and radians 0 <= *radians* < 2Π.
@@ -21,7 +22,7 @@ Types for modelling surfaces. Added from release 2.1.0.
 * **PolygonalSurface** representing a *ReferencePosition* sourrounded by a polygonal border.
 
 Surfaces has a *Includes(Position)* method that tells if a *Position* lies on or within the surface's border. 
-You can create your own by derive from **Surface** base class.
+You can create your own by deriving from **Surface** base class.
 
 ## Namespace *Tellurian.Geospatial.Transform*
 Types and methods for transforming between cartesian and planar coordinates.
@@ -49,7 +50,7 @@ You can write additional distance calculators by implementing the *IDistanceCalc
 
 ## References
 This implementation is inspired by part of *Latitude/longitude spherical geodesy tools*  
-MIT Licence (c) Chris Veness 2002-2020  
+MIT Licence (c) Chris Veness 2002-2022 
 https://www.movable-type.co.uk/scripts/latlong.html  
 https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html
 https://github.com/chrisveness/geodesy
