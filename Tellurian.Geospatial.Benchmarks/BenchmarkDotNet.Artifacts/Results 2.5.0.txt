@@ -1,0 +1,45 @@
+|               Method |        Mean |     Error |    StdDev |      Median | Ratio | RatioSD |
+|--------------------- |------------:|----------:|----------:|------------:|------:|--------:|
+|        GetFromMeters |   0.0006 ns | 0.0016 ns | 0.0015 ns |   0.0000 ns |     ? |       ? |
+|                      |             |           |           |             |       |         |
+|    GetFromKilometers |   1.2756 ns | 0.0371 ns | 0.0309 ns |   1.2898 ns |  1.00 |    0.00 |
+|                      |             |           |           |             |       |         |
+| DistancesEqualsOther |   2.5629 ns | 0.0724 ns | 0.0642 ns |   2.5656 ns |  1.00 |    0.00 |
+|                      |             |           |           |             |       |         |
+|     DistanceAddition |   1.7316 ns | 0.0503 ns | 0.0471 ns |   1.7424 ns |  1.00 |    0.00 |
+|                      |             |           |           |             |       |         |
+|  DistanceSubtraction |   2.5465 ns | 0.0507 ns | 0.0450 ns |   2.5595 ns |  1.00 |    0.00 |
+|                      |             |           |           |             |       |         |
+|     DistanceAsString | 150.6727 ns | 2.3448 ns | 2.1933 ns | 151.8616 ns |  1.00 |    0.00 |
+
+|                      Method |       Mean |     Error |    StdDev |     Median | Ratio |
+|---------------------------- |-----------:|----------:|----------:|-----------:|------:|
+|      GetPositionFromDegrees |   8.157 ns | 0.1580 ns | 0.1319 ns |   8.191 ns |  1.00 |
+|                             |            |           |           |            |       |
+|      GetPositionFromRadians |   8.158 ns | 0.1039 ns | 0.0972 ns |   8.199 ns |  1.00 |
+|                             |            |           |           |            |       |
+| PositionAsRadianCoordinates |   1.986 ns | 0.2476 ns | 0.6901 ns |   1.739 ns |  1.00 |
+|                             |            |           |           |            |       |
+|              GetDestination | 106.600 ns | 1.2839 ns | 1.7140 ns | 106.004 ns |  1.00 |
+|                             |            |           |           |            |       |
+|           PositionIsBetween | 513.717 ns | 8.4805 ns | 7.9327 ns | 511.984 ns |  1.00 |
+|                             |            |           |           |            |       |
+|           PositionsAreEqual |   3.916 ns | 0.1173 ns | 0.2599 ns |   3.793 ns |  1.00 |
+
+|             Method |       Mean |      Error |     StdDev |     Median | Ratio |
+|------------------- |-----------:|-----------:|-----------:|-----------:|------:|
+|           Distance |   8.116 ns |  0.1001 ns |  0.0936 ns |   8.136 ns |  1.00 |
+|                    |            |            |            |            |       |
+|            Bearing |  13.344 ns |  1.0735 ns |  2.9924 ns |  12.840 ns |  1.00 |
+|                    |            |            |            |            |       |
+|     InitialBearing |  10.786 ns |  1.2463 ns |  3.6157 ns |   9.230 ns |  1.00 |
+|                    |            |            |            |            |       |
+|       FinalBearing |   8.556 ns |  0.3005 ns |  0.8859 ns |   8.587 ns |  1.00 |
+|                    |            |            |            |            |       |
+| CrossTrackDistance | 400.889 ns | 21.8022 ns | 61.8491 ns | 400.088 ns |  1.00 |
+|                    |            |            |            |            |       |
+|    OnTrackDistance | 528.535 ns | 10.5413 ns | 14.4291 ns | 525.258 ns |  1.00 |
+|                    |            |            |            |            |       |
+|          IsOnTrack | 306.277 ns |  5.8396 ns | 13.4174 ns | 304.437 ns |  1.00 |
+|                    |            |            |            |            |       |
+|            Inverse |  20.497 ns |  1.2192 ns |  3.5565 ns |  18.912 ns |  1.00 |
