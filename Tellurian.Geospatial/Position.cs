@@ -1,5 +1,4 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
@@ -22,16 +21,19 @@ public readonly struct Position : IEquatable<Position>
 {
     private static readonly Position _Origo = FromDegrees(0, 0);
     public static Position Origo => _Origo;
-    public static Position FromDegrees(double latitude, double longitude) => new(latitude, longitude);
-    public static Position FromRadians(double latitude, double longitude) => new(latitude * 180 / Math.PI, longitude * 180 / Math.PI);
 
-    private Position(in double latitude, in double longitude)
+    public static Position FromDegrees(double latitude, double longitude) => new()
     {
-        Latitude = Latitude.FromDegrees(latitude);
-        Longitude = Longitude.FromDegrees(longitude);
-    }
+        Latitude = Latitude.FromDegrees(latitude),
+        Longitude = Longitude.FromDegrees(longitude)
+    };
 
-    [JsonConstructor]
+    public static Position FromRadians(double latitude, double longitude) => new()
+    {
+        Latitude = Latitude.FromRadians(latitude),
+        Longitude = Longitude.FromRadians(longitude)
+    };
+
     public Position(Latitude latitude, Longitude longitude)
     {
         Longitude = longitude;
@@ -45,9 +47,11 @@ public readonly struct Position : IEquatable<Position>
     [DataMember(Name = "Longitude")]
     [JsonPropertyName("longitude")]
     public Longitude Longitude { get; init; }
+
     [JsonIgnore]
     public bool IsOrigo => Latitude.IsZero && Longitude.IsZero;
 
+    [JsonIgnore]
     public (double φ, double λ) RadianCoordinates => (Latitude.Radians, Longitude.Radians);
 
     /// <summary>
@@ -71,6 +75,14 @@ public readonly struct Position : IEquatable<Position>
         return FromRadians(φ2, λ2);
     }
 
+    public Position Destination(in Vector vector) => Destination(vector.Direction, vector.Distance);
+
+    /// <summary>
+    /// Determines if current <see cref="Position"/ is between two other positions.>
+    /// </summary>
+    /// <param name="before"></param>
+    /// <param name="after"></param>
+    /// <returns>True if this position is between the before and after positions.</returns>
     public bool IsBetween(Position before, Position after)
     {
         var s = Stretch.Between(before, after);
@@ -90,6 +102,4 @@ public readonly struct Position : IEquatable<Position>
 
     [ExcludeFromCodeCoverage]
     public override int GetHashCode() => HashCode.Combine(Latitude, Longitude);
-
-    internal (double latitude, double longitude) Radians => (Latitude.Radians, Longitude.Radians);
 }

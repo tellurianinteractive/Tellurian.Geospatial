@@ -26,9 +26,6 @@ public readonly struct Angle : IEquatable<Angle>, IComparable<Angle>
         Degrees = degrees;
     }
 
-    [JsonConstructor]
-    public Angle(double degrees) : this(degrees, 0, 360) { }
-
     [DataMember(Name = "Degrees")]
     [JsonPropertyName("degrees")]
     public double Degrees { get; init; }
@@ -63,7 +60,14 @@ public readonly struct Angle : IEquatable<Angle>, IComparable<Angle>
     public static bool operator >(in Angle one, in Angle another) => one.CompareTo(another) == 1;
     public static bool operator >=(in Angle one, in Angle another) => one.CompareTo(another) >= 0;
     public static bool operator <(in Angle one, in Angle another) => one.CompareTo(another) == -1;
-    public static bool operator <=(in Angle one, in Angle another) => one.CompareTo(another) <= 0;
+    public static bool operator <=(in Angle one, in Angle another) => one.CompareTo(another) <= 0; 
+
+
+    public static bool operator >(in Angle angle, in double degrees) => angle > FromDegrees(degrees);
+    public static bool operator <(in Angle angle, in double degrees) => angle < FromDegrees(degrees);
+    public static bool operator <=(in Angle angle, in double degrees) => angle <= FromDegrees(degrees);
+    public static bool operator >=(in Angle angle, in double degrees) => angle >= FromDegrees(degrees);
+
     public static Angle operator -(in Angle one, in Angle another)
     {
         if (one.IsUndefined || another.IsUndefined) return Undefined;
@@ -79,8 +83,9 @@ public readonly struct Angle : IEquatable<Angle>, IComparable<Angle>
         IsUndefined && other.IsUndefined ? 0 :
         IsUndefined && !other.IsUndefined ? -1 :
         !IsUndefined && other.IsUndefined ? 1 :
-        (Degrees < other.Degrees) && other.Degrees - Degrees > CompareTolerance ? -1 :
-        ((Degrees > other.Degrees) && Degrees - other.Degrees > CompareTolerance ? 1 : 0);
+        Degrees > other.Degrees && Degrees - other.Degrees > CompareTolerance ? 1 :
+        Degrees < other.Degrees && other.Degrees -Degrees > CompareTolerance ? -1 :
+        0;
 
     public static Angle Add(Angle one, Angle another) => one + another;
     public static Angle Subtract(Angle one, Angle another) => one - another;
@@ -97,7 +102,7 @@ public readonly struct Angle : IEquatable<Angle>, IComparable<Angle>
         return a1 < a2 ? a1 : a2;
     }
 
-    public override string ToString() => IsUndefined ? "Undefined" : string.Format(CultureInfo.CurrentCulture, "{0:F2}°", Degrees);
+    public override string ToString() => IsUndefined ? "Undefined" : $"{Degrees:F2}°";
     public override bool Equals(object? obj) => obj is Angle angle && Equals(angle);
     public bool Equals(Angle other) => CompareTo(other) == 0;
 

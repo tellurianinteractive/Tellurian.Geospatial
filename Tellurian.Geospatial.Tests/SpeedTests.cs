@@ -1,8 +1,13 @@
-﻿namespace Tellurian.Geospatial.Tests;
+﻿using System.Globalization;
+
+namespace Tellurian.Geospatial.Tests;
 
 [TestClass]
 public class SpeedTests
 {
+    [TestInitialize]
+    public void TestInitialize() => CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
     [TestMethod]
     public void NegativeSpeedThrows()
     {
@@ -36,10 +41,10 @@ public class SpeedTests
     [TestMethod]
     public void Operators()
     {
-        Assert.IsTrue(Speed.FromKilometersPerHour(36) == Speed.FromMetersPerSecond(10));
-        Assert.IsFalse(Speed.FromKilometersPerHour(36) == Speed.FromMetersPerSecond(11));
-        Assert.IsFalse(Speed.FromKilometersPerHour(36) != Speed.FromMetersPerSecond(10));
-        Assert.IsTrue(Speed.FromKilometersPerHour(36) != Speed.FromMetersPerSecond(11));
+        Assert.IsTrue(Speed.FromKilometersPerHour(36) == Speed.FromMetersPerSecond(10), "Equals 1");
+        Assert.IsFalse(Speed.FromKilometersPerHour(36) == Speed.FromMetersPerSecond(11), "Equals 2");
+        Assert.IsFalse(Speed.FromKilometersPerHour(36) != Speed.FromMetersPerSecond(10), "Not Equals 1");
+        Assert.IsTrue(Speed.FromKilometersPerHour(36) != Speed.FromMetersPerSecond(11), "Not Equals 2");
         Assert.IsTrue(Speed.FromKilometersPerHour(36) < Speed.FromMetersPerSecond(11));
         Assert.IsTrue(Speed.FromKilometersPerHour(36) <= Speed.FromMetersPerSecond(11));
         Assert.IsTrue(Speed.FromKilometersPerHour(36) <= Speed.FromMetersPerSecond(10));
@@ -59,8 +64,8 @@ public class SpeedTests
     [TestMethod]
     public void IsBelow()
     {
-        Assert.IsTrue(Speed.Zero.IsBelow(1));
-        Assert.IsFalse(Speed.FromMetersPerSecond(1).IsBelow(1));
+        Assert.IsTrue(Speed.Zero < 1);
+        Assert.IsFalse(Speed.FromMetersPerSecond(1) < 1);
     }
 
     [TestMethod]
@@ -76,5 +81,24 @@ public class SpeedTests
         Assert.IsTrue(Speed.Zero.IsZero);
         Assert.IsFalse(Speed.FromMetersPerSecond(0.01).IsZero);
     }
+
+    [TestMethod]
+    public void CompareToLarger()
+    {
+        var s1 = Speed.FromMetersPerSecond(1);
+        var s2 = Speed.FromMetersPerSecond(2);
+        var result = s1.CompareTo(s2);
+        Assert.AreEqual(-1, result);
+    }
+
+    [TestMethod]
+    public void CompareToSmaller()
+    {
+        var s1 = Speed.FromMetersPerSecond(1);
+        var s2 = Speed.FromMetersPerSecond(2);
+        var result = s2.CompareTo(s1);
+        Assert.AreEqual(1, result);
+    }
+
 
 }

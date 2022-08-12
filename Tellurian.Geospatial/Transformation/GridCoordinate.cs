@@ -14,13 +14,15 @@ public readonly struct GridCoordinate : IEquatable<GridCoordinate>
         _Northing = northing;
         _Easting = easting;
     }
-    [DataMember]
-    private readonly double _Easting;
-    [DataMember]
-    private readonly double _Northing;
+
+    [DataMember(Name ="Easting")]
     [JsonPropertyName("easting")]
-    public double Easting => _Easting;
+    private readonly double _Easting;
+
+    [DataMember (Name = "Northing")]
     [JsonPropertyName("northing")]
+    private readonly double _Northing;
+    public double Easting => _Easting;
     public double Northing => _Northing;
 
     public (double X, double Y) Coordinates => (Northing, Easting);

@@ -74,15 +74,15 @@ public static class GaussKreugerTransformer
         var ξ = (X - projection.FalseNorthing) / (projection.Scale * A);
         var η = (Y - projection.FalseEasting) / (projection.Scale * A);
         var Ξ = ξ -
-            Δ1 * Sin(2.0 * ξ) * Cosh(2.0 * η) -
-            Δ2 * Sin(4.0 * ξ) * Cosh(4.0 * η) -
-            Δ3 * Sin(6.0 * ξ) * Cosh(6.0 * η) -
-            Δ4 * Sin(8.0 * ξ) * Cosh(8.0 * η);
+                        Δ1 * Sin(2.0 * ξ) * Cosh(2.0 * η) -
+                        Δ2 * Sin(4.0 * ξ) * Cosh(4.0 * η) -
+                        Δ3 * Sin(6.0 * ξ) * Cosh(6.0 * η) -
+                        Δ4 * Sin(8.0 * ξ) * Cosh(8.0 * η);
         var Η = η -
-            Δ1 * Cos(2.0 * ξ) * Sinh(2.0 * η) -
-            Δ2 * Cos(4.0 * ξ) * Sinh(4.0 * η) -
-            Δ3 * Cos(6.0 * ξ) * Sinh(6.0 * η) -
-            Δ4 * Cos(8.0 * ξ) * Sinh(8.0 * η);
+                        Δ1 * Cos(2.0 * ξ) * Sinh(2.0 * η) -
+                        Δ2 * Cos(4.0 * ξ) * Sinh(4.0 * η) -
+                        Δ3 * Cos(6.0 * ξ) * Sinh(6.0 * η) -
+                        Δ4 * Cos(8.0 * ξ) * Sinh(8.0 * η);
         var Φ = Asin(Sin(Ξ) / Cosh(Η));
         var Δλ = Atan(Sinh(Η) / Cos(Ξ));
         var λ = λ0 + Δλ;

@@ -13,15 +13,13 @@ public readonly struct Latitude : IEquatable<Latitude>, IComparable<Latitude>
     public static double CompareTolerance { get; set; } = DefaultCompareTolerance;
 
     public static Latitude FromDegrees(double degrees) => new (degrees, -90, 90);
-    public static Latitude FromRadians(double radians) => FromDegrees(radians * 180 / Math.PI);
+    public static Latitude FromRadians(double radians) => new(radians * 180 / Math.PI, -90, 90);
 
     private Latitude(in double degrees, double min, double max)
     {
         if (degrees < min || degrees > max) throw new ArgumentOutOfRangeException(nameof(degrees));
         Degrees = degrees;
     }
-    [JsonConstructor]
-    public Latitude(double degrees) : this(degrees, -90, 90) { }
 
     [DataMember(Name = "Degrees")]
     [JsonPropertyName("degrees")]
@@ -45,7 +43,7 @@ public readonly struct Latitude : IEquatable<Latitude>, IComparable<Latitude>
     public bool Equals(Latitude other) => CompareTo(other) == 0;
     public override bool Equals(object? obj) => obj is Latitude longitude && Equals(longitude);
 
-    public override string ToString() => string.Format(CultureInfo.CurrentCulture, "{0:F1}", Degrees);
+    public override string ToString() => Degrees > 0 ? $"{Degrees:F1}ºN" : $"{-Degrees:F1}ºS";
 
     [ExcludeFromCodeCoverage]
     public override int GetHashCode() => Degrees.GetHashCode();

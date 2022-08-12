@@ -1,5 +1,4 @@
-﻿using System;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial;
@@ -8,10 +7,12 @@ namespace Tellurian.Geospatial;
 public readonly struct Vector : IEquatable<Vector>
 {
     public static Vector From(double degrees, double meters) =>
-        new (Angle.FromDegrees(degrees), Distance.FromMeters(meters));
+        new(Angle.FromDegrees(degrees), Distance.FromMeters(meters));
 
-    [JsonConstructor]
-    public Vector(Angle direction, Distance distance)
+    public static Vector From(Angle direction, Distance distance) =>
+        new () { Direction = direction, Distance = distance };
+
+    private Vector(Angle direction, Distance distance)
     {
         Direction = direction;
         Distance = distance;
@@ -29,4 +30,6 @@ public readonly struct Vector : IEquatable<Vector>
     public override int GetHashCode() => HashCode.Combine(Direction, Distance);
     public static bool operator ==(Vector left, Vector right) => left.Equals(right);
     public static bool operator !=(Vector left, Vector right) => !(left == right);
+
+    public override string ToString() => $"{Direction} {Distance}";
 }

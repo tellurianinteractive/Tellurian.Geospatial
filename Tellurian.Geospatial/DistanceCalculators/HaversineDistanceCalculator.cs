@@ -1,4 +1,5 @@
-﻿using static System.Math;
+﻿using System.Runtime.CompilerServices;
+using static System.Math;
 
 namespace Tellurian.Geospatial.DistanceCalculators;
 

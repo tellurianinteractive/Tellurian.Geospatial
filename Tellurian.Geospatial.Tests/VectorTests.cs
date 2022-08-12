@@ -1,8 +1,13 @@
-﻿namespace Tellurian.Geospatial.Tests;
+﻿using System.Globalization;
+
+namespace Tellurian.Geospatial.Tests;
 
 [TestClass]
 public class VectorTests
 {
+    [TestInitialize]
+    public void TestInitialize() => CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
     [TestMethod]
     public void XmlSerializationAndDeserializationWorks()
     {
@@ -20,5 +25,5 @@ public class VectorTests
     }
 
     private static Vector TestVector =>
-        new (Angle.FromDegrees(45), Distance.FromMeters(10));
+        Vector.From (Angle.FromDegrees(45), Distance.FromMeters(10));
 }

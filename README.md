@@ -1,11 +1,25 @@
 # Tellurian.Geospatial
 Strongly typed object model for geospatial calculations and transformations.
 All types are also serializable with the *DataContractSerializer* and *System.Text.Json*.
-From release 2.3.0 this package only supports .NET 6+.
 
 Released under MIT license 2022.
 
-## Namespace *Tellurian.Geospatial*
+### Breaking changes
+From release 2.3.0 this package only supports .NET 6+.
+
+From release 2.4.0: Changed serialization property names for some types, which may cause serialization to break 
+when older version of this package is used in the 'other' end of the wire.
+
+From release 2.5.0: 
+- **ToString()** changed for *angle*, *latitude*, *longitude*, *position*, *vector*, and *stretch*.
+See the source test project for expected output strings.
+- **Public constructors** removed for *angle*, *distance*, *latitude*, *longitude*, *position*, and *speed*, 
+as they was only intended for deserialization and this works without them. Use static factory methods instead.
+- **Equality and comparisions** for *angle*, *distance*, and *speed* now correctly considerer *compare tolerance*.
+- **Obsolete methods** are marked for future removal. Consider make the changes suggested.
+
+## Overview of functionality
+### Namespace *Tellurian.Geospatial*
 Types for basic calculations of dictances etc. and building blocks for more advanced spatial algorithms.
 * **Angle** representing 0 <= *degrees* < 360 and radians 0 <= *radians* < 2Π.
 * **Distance** representing zero or positive distances in meters and kilometers.
@@ -16,7 +30,7 @@ Types for basic calculations of dictances etc. and building blocks for more adva
 
 Each of these objects has value safe initializers and useful methods for calculating distances, angles etc. 
 
-## Namespace *Tellurian.Geospatial.Surfaces* 
+### Namespace *Tellurian.Geospatial.Surfaces* 
 Types for modelling surfaces. Added from release 2.1.0.
 * **CircularSurface** representing a *ReferencePosition* with a *Radius*.
 * **PolygonalSurface** representing a *ReferencePosition* sourrounded by a polygonal border.
@@ -24,7 +38,7 @@ Types for modelling surfaces. Added from release 2.1.0.
 Surfaces has a *Includes(Position)* method that tells if a *Position* lies on or within the surface's border. 
 You can create your own by deriving from **Surface** base class.
 
-## Namespace *Tellurian.Geospatial.Transform*
+### Namespace *Tellurian.Geospatial.Transform*
 Types and methods for transforming between cartesian and planar coordinates.
 * **EarthEllipsoid** represents the form of the earth. There are a few preconfigured, see below. You can easy create other.
 * **MapProjection** represents how coordinates are mapped to the earth.  There are a few preconfigured, see below. You can easy create other.
@@ -40,13 +54,19 @@ There are built-in *ellipsoids*:
 * **Ellipsoids.GRS80** used for many transformations to/from planar coordinates.
 * **Ellipsoids.Hayford1910** 
 
-## Namespace *Tellurian.Geospatial.DistanceCalculators*
+### Namespace *Tellurian.Geospatial.DistanceCalculators*
 The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding  precision and speed of calculation. 
 The following **DistanceCalculator** is included:
 * **HaversineDistanceCalculator** is a fast calculation that is suitable for distances down to decimeters, suitable for tracking of movable objects. 
 This is also the default **DistanceCalculator**.
 
 You can write additional distance calculators by implementing the *IDistanceCalculator* interface and use it to calculate distances of **Stretch**es.
+
+## Benchmarks
+A **Tellurian.Geospatial.Benchmarks** project is available in the source code repository as part of
+the solution for *Tellurian.Geospatial*.
+This project can be used to analyse performance issues with this package.
+If you add benchmarks, please also make a pull request to provide these to all of us.
 
 ## References
 This implementation is inspired by part of *Latitude/longitude spherical geodesy tools*  

@@ -1,10 +1,14 @@
-﻿using Tellurian.Geospatial.DistanceCalculators;
+﻿using System.Globalization;
+using Tellurian.Geospatial.DistanceCalculators;
 
 namespace Tellurian.Geospatial.Tests;
 
 [TestClass]
 public class StretchTests
 {
+    [TestInitialize]
+    public void TestInitialize() => CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
     [TestMethod]
     public void LongStretchHaveCorrectProperties()
     {
@@ -34,13 +38,6 @@ public class StretchTests
         Assert.AreEqual(TestData.Hövik, target.From);
         Assert.AreEqual(TestData.Höviksnäs, target.To);
     }
-
-    //[TestMethod]
-    //public void NullAsDistanceCalculatorUsesDefault()
-    //{
-    //    var target = Stretch.Between(TestData.Hövik, TestData.Höviksnäs);
-    //    Assert.AreEqual(0.5620, target.Distance.Kilometers, 0.001);
-    //}
 
     [TestMethod]
     public void EqualsIsCorrect()

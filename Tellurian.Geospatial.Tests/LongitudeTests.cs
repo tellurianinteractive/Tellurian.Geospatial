@@ -1,8 +1,13 @@
-﻿namespace Tellurian.Geospatial.Tests;
+﻿using System.Globalization;
+
+namespace Tellurian.Geospatial.Tests;
 
 [TestClass]
 public class LongitudeTests
 {
+    [TestInitialize]
+    public void TestInitialize() => CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
     [TestMethod]
     public void Over90DegreesThrows()
     {
@@ -73,6 +78,7 @@ public class LongitudeTests
     [TestMethod]
     public void ToStringWorks()
     {
-        Assert.AreEqual("45,0", Longitude.FromDegrees(45).ToString());
+        Assert.AreEqual("45.0ºE", Longitude.FromDegrees(45).ToString());
+        Assert.AreEqual("45.0ºW", Longitude.FromDegrees(-45).ToString());
     }
 }

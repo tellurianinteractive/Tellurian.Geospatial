@@ -21,9 +21,6 @@ public readonly struct Longitude : IEquatable<Longitude>, IComparable<Longitude>
         Degrees = degrees;
     }
 
-    [JsonConstructor]
-    public Longitude(double degrees) : this(degrees, -180, 180) { }
-
     [DataMember(Name = "Degrees")]
     [JsonPropertyName("degrees")]
     public double Degrees { get; init; }
@@ -47,7 +44,7 @@ public readonly struct Longitude : IEquatable<Longitude>, IComparable<Longitude>
 
     public override bool Equals(object? obj) => obj is Longitude longitude && Equals(longitude);
 
-    public override string ToString() => string.Format(CultureInfo.CurrentCulture, "{0:F1}", Degrees);
+    public override string ToString() => Degrees > 0 ? $"{Degrees:F1}ºE" : $"{-Degrees:F1}ºW";
 
     [ExcludeFromCodeCoverage]
     public override int GetHashCode() => Degrees.GetHashCode();

@@ -13,8 +13,10 @@
 		<Copyright>Stefan Fjällemark</Copyright>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Description>Object model for geospatial calculations and transformations.</Description>
-		<Version>2.3.1</Version>
-		<PackageReleaseNotes>2.3.1 Updated package information.</PackageReleaseNotes>
+		<Version>2.5.0</Version>
+		<PackageReleaseNotes>
+			2.5.0. A number of possibly breaking changes, see release note.
+		</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/tellurianinteractive/Tellurian.Geospatial.git</RepositoryUrl>
 		<PackageProjectUrl>https://github.com/tellurianinteractive/Tellurian.Geospatial</PackageProjectUrl>
@@ -33,6 +35,7 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
 		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
 	</ItemGroup>
 	<ItemGroup>

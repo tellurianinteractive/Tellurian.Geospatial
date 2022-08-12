@@ -12,8 +12,8 @@ public class PolygonalSurface : Surface
     public PolygonalSurface(IEnumerable<Position> borderPositions, Position referencePosition) : base(referencePosition) => _BorderPositions = borderPositions.ToArray();
 
     [DataMember(Name = "BorderPositions")]
-    private readonly Position[] _BorderPositions;
     [JsonPropertyName("borderPositions")]
+    private readonly Position[] _BorderPositions;
     public IEnumerable<Position> BorderPositions => _BorderPositions;
 
     public override bool Includes(Position position)

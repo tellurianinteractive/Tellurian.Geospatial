@@ -23,20 +23,21 @@ namespace Tellurian.Geospatial
         private static readonly IDistanceCalculator DefaultDistanceCalculator = new HaversineDistanceCalculator();
 
         private readonly IDistanceCalculator _DistanceCalculator;
+
         // We cash properties that may be called more than one time.
         private Distance? _Distance;
         private Angle? _InitialBearing;
         private Angle? _FinalBearing;
         private Angle? _Direction;
 
-        public static Stretch Between(in Position from, in Position to) => new(from, to);
-        public static Stretch Between(in Position from, in Position to, IDistanceCalculator distanceCalculator) => new(from, to, distanceCalculator);
+        public static Stretch Between(in Position from, in Position to, IDistanceCalculator? distanceCalculator = null) => 
+            new(from, to, distanceCalculator);
+        public static Stretch Along (in Position from, in Vector vector, IDistanceCalculator? distanceCalculator = null) => 
+            new(from, from.Destination(vector), distanceCalculator);
 
         [JsonConstructor]
         public Stretch(Position from, Position to) : this(from, to, DefaultDistanceCalculator) { }
-
-
-        private Stretch(in Position from, in Position to, IDistanceCalculator distanceCalculator)
+        public Stretch(in Position from, in Position to, IDistanceCalculator? distanceCalculator = null)
         {
             From = from;
             To = to;
@@ -71,8 +72,6 @@ namespace Tellurian.Geospatial
 
         public Distance GetDistance(IDistanceCalculator usingDistanceCalculator) => usingDistanceCalculator.GetDistance(From, To);
 
-
-
         private Angle GetInitialBearing()
         {
             var (φ1, λ1) = From.RadianCoordinates;
@@ -106,7 +105,6 @@ namespace Tellurian.Geospatial
         /// </summary>
         /// <param name="at"></param>
         /// <returns></returns>
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Distance CrossTrackDistance(this Stretch me, Position at)
         {
             const double R = EarthMeanRadiusMeters;

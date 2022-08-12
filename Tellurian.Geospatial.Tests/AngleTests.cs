@@ -1,8 +1,13 @@
-﻿namespace Tellurian.Geospatial.Tests;
+﻿using System.Globalization;
+
+namespace Tellurian.Geospatial.Tests;
 
 [TestClass]
 public class AngleTests
 {
+    [TestInitialize]
+    public void TestInitialize() => CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
     [TestMethod]
     public void ZeroAngleIsValid()
     {
@@ -69,7 +74,7 @@ public class AngleTests
     public void ToStringWorks()
     {
         var target = Angle.FromDegrees(1.5);
-        Assert.AreEqual("1,50°", target.ToString());
+        Assert.AreEqual("1.50°", target.ToString());
     }
 
     [TestMethod]

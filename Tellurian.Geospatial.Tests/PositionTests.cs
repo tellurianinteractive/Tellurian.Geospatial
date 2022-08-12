@@ -1,8 +1,13 @@
-﻿namespace Tellurian.Geospatial.Tests;
+﻿using System.Globalization;
+
+namespace Tellurian.Geospatial.Tests;
 
 [TestClass]
 public class PositionTests
 {
+    [TestInitialize]
+    public void TestInitialize() => CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+
     [TestMethod]
     public void IsInvalid()
     {
