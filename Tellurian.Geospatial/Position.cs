@@ -69,7 +69,6 @@ public readonly struct Position : IEquatable<Position>
         var (φ, λ) = RadianCoordinates;
         var δ = initialBearing.Radians;
         var d = distance.Meters;
-
         var φ2 = Asin((Sin(φ) * Cos(d / R)) + (Cos(φ) * Sin(d / R) * Cos(δ)));
         var λ2 = λ + Atan2(Sin(δ) * Sin(d / R) * Cos(φ), Cos(d / R) - (Sin(φ) * Sin(φ2)));
         return FromRadians(φ2, λ2);
@@ -78,19 +77,19 @@ public readonly struct Position : IEquatable<Position>
     public Position Destination(in Vector vector) => Destination(vector.Direction, vector.Distance);
 
     /// <summary>
-    /// Determines if current <see cref="Position"/ is between two other positions.>
+    /// Determines if current <see cref="Position"/> is between two other positions.>
     /// </summary>
     /// <param name="before"></param>
     /// <param name="after"></param>
     /// <returns>True if this position is between the before and after positions.</returns>
     public bool IsBetween(Position before, Position after)
-    {
+    { 
         var s = Stretch.Between(before, after);
         var s1 = Stretch.Between(before, this);
         var s2 = Stretch.Between(after, this);
         var a1 = (s.Direction.To(s1.Direction));
         var a2 = (s.Direction.Reverse.To(s2.Direction));
-        return a1.IsAcute && !a1.IsRight && a2.IsAcute && !a2.IsRight && !s1.Distance.IsZero && !s2.Distance.IsZero;
+        return a1.IsAcute  && a2.IsAcute &&   !s1.Distance.IsZero && !s2.Distance.IsZero;
     }
 
     public static bool operator ==(in Position one, in Position another) => one.Equals(another);

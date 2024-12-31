@@ -2,14 +2,12 @@
 Strongly typed object model for geospatial calculations and transformations.
 All types are also serializable with the *DataContractSerializer* and *System.Text.Json*.
 
-Released under MIT license 2022.
+Released under MIT license 2022-2024.
 
+### Release  2.6.0
+- **Stretch** changed from *record* to *struct*. This means that the package now is heap-allocation free.
+- **NET 9 support** while still supporting .NET 8.
 ### Breaking changes
-From release 2.3.0 this package only supports .NET 6+.
-
-From release 2.4.0: Changed serialization property names for some types, which may cause serialization to break 
-when older version of this package is used in the 'other' end of the wire.
-
 From release 2.5.0: 
 - **ToString()** changed for *angle*, *latitude*, *longitude*, *position*, *vector*, and *stretch*.
 See the source test project for expected output strings.
@@ -17,6 +15,11 @@ See the source test project for expected output strings.
 as they was only intended for deserialization and this works without them. Use static factory methods instead.
 - **Equality and comparisions** for *angle*, *distance*, and *speed* now correctly considerer *compare tolerance*.
 - **Obsolete methods** are marked for future removal. Consider make the changes suggested.
+
+#### From release 2.4.0: 
+- Changed serialization property names for some types, which may cause serialization to break 
+when older version of this package is used in the 'other' end of the wire.
+
 
 ## Overview of functionality
 ### Namespace *Tellurian.Geospatial*
@@ -47,10 +50,11 @@ Types and methods for transforming between cartesian and planar coordinates.
 
 There are built-in *map projections* for planar coordinates:
 * **MapProjections.UTMxx**, where 'xx' is any of zone 32-35 used in Europe.
-* **MapProjections.Sweref99TM** and **MapProjections.RT90** used in Sweden.
+* **MapProjections.Sweref99TM** (same as UTM33 but extended to cover Sweden)
+* **MapProjections.RT90** (older system used in Sweden).
 
 There are built-in *ellipsoids*:
-* **Ellipsoids.WGS84** used for most GPS-devices.
+* **Ellipsoids.WGS84** used for most GPS-devices. **SWEREF99** differs < 1 meter from WGS84.
 * **Ellipsoids.GRS80** used for many transformations to/from planar coordinates.
 * **Ellipsoids.Hayford1910** 
 

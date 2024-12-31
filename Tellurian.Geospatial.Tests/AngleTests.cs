@@ -138,8 +138,8 @@ public class AngleTests
     {
         Assert.AreEqual(Angle.FromDegrees(10), Angle.FromDegrees(10));
         Assert.AreNotEqual(Angle.FromDegrees(10), new object());
-        Assert.AreNotEqual(Angle.FromDegrees(9.99998), Angle.FromDegrees(10));
-        Assert.AreEqual(Angle.FromDegrees(9.999999), Angle.FromDegrees(10));
+        Assert.AreNotEqual(Angle.FromDegrees(10-2*Angle.CompareTolerance), Angle.FromDegrees(10));
+        Assert.AreEqual(Angle.FromDegrees(10-Angle.CompareTolerance), Angle.FromDegrees(10));
     }
 
     [TestMethod]

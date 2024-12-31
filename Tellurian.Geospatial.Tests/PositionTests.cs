@@ -126,7 +126,7 @@ public class PositionTests
     {
         var right = Position.FromDegrees(50, 10);
         var left = right.Destination(Angle.Zero.Reverse, Distance.FromMeters(1000));
-        var target = right.Destination(Angle.Right, Distance.FromMeters(1));
+        var target = right.Destination(Angle.Right-2*Angle.CompareTolerance, Distance.FromMeters(1));
         Assert.IsFalse(target.IsBetween(left, right));
     }
 

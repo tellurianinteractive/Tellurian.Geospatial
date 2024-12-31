@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace Tellurian.Geospatial.Surfaces;
 
+/// <summary>
+/// Additional methods operating on a set of <see cref="Position">positions</see>.
+/// </summary>
 public static class PositionExtensions
 {
     public static bool IsWithin(this Position me, Surface area) => area.Includes(me);

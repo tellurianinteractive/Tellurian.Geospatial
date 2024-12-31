@@ -23,7 +23,6 @@ public class GridCoordinateTests
         Assert.IsTrue(one == another);
         Assert.IsFalse(one != another);
         Assert.AreNotEqual(one, new object());
-        Assert.AreNotEqual(one, null);
     }
 
     [TestMethod]

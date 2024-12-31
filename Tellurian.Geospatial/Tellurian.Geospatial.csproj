@@ -1,21 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFrameworks>net8.0;net9.0</TargetFrameworks>
 		<AssemblyName>Tellurian.Geospatial</AssemblyName>
 		<RootNamespace>Tellurian.Geospatial</RootNamespace>
 		<PackageId>Tellurian.Geospatial</PackageId>
 		<LangVersion>latest</LangVersion>
 		<Nullable>enable</Nullable>
+		<NoWarn>CS1591</NoWarn>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Title>Tellurian Geospatial</Title>
 		<Authors>Stefan Fjällemark</Authors>
 		<Company>Tellurian Interactive AB</Company>
 		<Copyright>Stefan Fjällemark</Copyright>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Description>Object model for geospatial calculations and transformations.</Description>
-		<Version>2.5.0</Version>
+		<Version>2.6.0</Version>
 		<PackageReleaseNotes>
-			2.5.0. A number of possibly breaking changes, see README.
+			2.6.0. Upgrade to .NET 9, see README.
 		</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/tellurianinteractive/Tellurian.Geospatial.git</RepositoryUrl>
@@ -35,8 +37,11 @@
 		<ContinuousIntegrationBuild>true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.2.0" />
-		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1" PrivateAssets="All" />
+	  <Content Include="Icon.png" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="4.11.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="8.0.0" PrivateAssets="All" />
 	</ItemGroup>
 	<ItemGroup>
 		<None Include="..\README.md">
@@ -45,11 +50,6 @@
 		</None>
 	</ItemGroup>
 	<ItemGroup>
-		<None Update="Icon.png">
-			<Pack>True</Pack>
-			<PackagePath>\</PackagePath>
-		</None>
+		<None Include="Icon.png" Pack="true" PackagePath=""/>			
 	</ItemGroup>
-
-
 </Project>

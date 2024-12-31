@@ -5,16 +5,34 @@ using System.Text.Json.Serialization;
 
 namespace Tellurian.Geospatial.Surfaces;
 
+/// <summary>
+/// Represents a spatial area made up of a set od lines defining its border.
+/// </summary>
 [DataContract]
 public class PolygonalSurface : Surface
 {
+    /// <summary>
+    /// Creates a <see cref="PolygonalSurface"/>.
+    /// </summary>
+    /// <param name="borderPositions"></param>
+    /// <param name="referencePosition"></param>
     [JsonConstructor]
     public PolygonalSurface(IEnumerable<Position> borderPositions, Position referencePosition) : base(referencePosition) => _BorderPositions = borderPositions.ToArray();
 
     [DataMember(Name = "BorderPositions")]
     [JsonPropertyName("borderPositions")]
     private readonly Position[] _BorderPositions;
+
+    /// <summary>
+    /// The <see cref="Position">positions</see> that makes up the lines that forms the polygonal area.
+    /// </summary>
     public IEnumerable<Position> BorderPositions => _BorderPositions;
+
+    /// <summary>
+    /// Determines whether a <see cref="Position"/> lies within the surface boundary or not.
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns>True if within bounds or on bound; otherwise false;</returns>
 
     public override bool Includes(Position position)
     {
@@ -44,5 +62,10 @@ public class PolygonalSurface : Surface
         position.Latitude <= _BorderPositions.MostNorthern() ||
         position.Latitude >= _BorderPositions.MostSouthern();
 
-    public override bool Equals(Surface? me) => me is PolygonalSurface other && base.Equals(other) && Enumerable.SequenceEqual(BorderPositions, other.BorderPositions);
+    /// <summary>
+    /// Determines if two surfaces are equal;
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns>True if both are <see cref="CircularSurface"/> and properties are equal; otherwise false.</returns>
+    public override bool Equals(Surface? other) => other is PolygonalSurface it && base.Equals(it) && Enumerable.SequenceEqual(BorderPositions, it.BorderPositions);
 }

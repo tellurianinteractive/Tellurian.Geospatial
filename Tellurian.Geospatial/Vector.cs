@@ -30,6 +30,5 @@ public readonly struct Vector : IEquatable<Vector>
     public override int GetHashCode() => HashCode.Combine(Direction, Distance);
     public static bool operator ==(Vector left, Vector right) => left.Equals(right);
     public static bool operator !=(Vector left, Vector right) => !(left == right);
-
     public override string ToString() => $"{Direction} {Distance}";
 }

@@ -4,7 +4,7 @@ using static System.Math;
 namespace Tellurian.Geospatial.DistanceCalculators;
 
 /// <summary>
-/// Calculates distance using the <see cref="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</see>
+/// Calculates distance using <see href="https://en.wikipedia.org/wiki/Haversine_formula">Haversine formula</see>
 /// </summary>
 /// <remarks>
 /// <para>This  formula remains particularly well-conditioned for numerical computa­tion even at small distances.</para>
@@ -17,6 +17,12 @@ namespace Tellurian.Geospatial.DistanceCalculators;
 /// </remarks>
 public sealed class HaversineDistanceCalculator : IDistanceCalculator
 {
+    /// <summary>
+    /// Calculates distance between two positions.
+    /// </summary>
+    /// <param name="from"></param>
+    /// <param name="to"></param>
+    /// <returns>The <see cref="Distance"/> between twp <see cref="Position">positions</see>.</returns>
     public Distance GetDistance(in Position from, in Position to)
     {
         const double r = Constants.EarthMeanRadiusMeters;
