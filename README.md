@@ -80,7 +80,7 @@ https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html
 https://github.com/chrisveness/geodesy
 
 Implementation of the **GaussKrügerTransformer** is based on formulas from Swedish Land Survey (Lantmäteriet)  
-https://www.lantmateriet.se/sv/Kartor-och-geografisk-information/GPS-och-geodetisk-matning/Om-geodesi/Formelsamling/
+https://www.lantmateriet.se/sv/geodata/gps-geodesi-och-swepos/Om-geodesi/Formelsamling/
 
 
 
