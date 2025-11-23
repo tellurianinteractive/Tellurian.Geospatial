@@ -25,19 +25,19 @@ public class AngleTests
     [TestMethod]
     public void NegativeAngleIsInvalid()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Angle.FromDegrees(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Angle.FromDegrees(-1));
     }
 
     [TestMethod]
     public void Angle360IsInvalid()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Angle.FromDegrees(360));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Angle.FromDegrees(360));
     }
 
     [TestMethod]
     public void Angle2PiIsInvalid()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Angle.FromRadians(Math.PI * 2));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Angle.FromRadians(Math.PI * 2));
     }
 
     [TestMethod]

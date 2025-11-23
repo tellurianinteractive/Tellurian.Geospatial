@@ -11,13 +11,13 @@ public class LongitudeTests
     [TestMethod]
     public void Over90DegreesThrows()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Longitude.FromDegrees(180.1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Longitude.FromDegrees(180.1));
     }
 
     [TestMethod]
     public void UnderMinus90DegreesThrows()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Longitude.FromDegrees(-180.1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Longitude.FromDegrees(-180.1));
     }
 
     [TestMethod]

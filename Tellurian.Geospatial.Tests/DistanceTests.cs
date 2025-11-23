@@ -18,7 +18,7 @@ public class DistanceTests
     [TestMethod]
     public void NegativeDistanceThrows()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Distance.FromMeters(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Distance.FromMeters(-1));
     }
 
     [TestMethod]
@@ -86,7 +86,7 @@ public class DistanceTests
     [TestMethod]
     public void Zero()
     {
-        Assert.AreEqual(Distance.Zero.Meters, 0.0);
+        Assert.AreEqual(0.0, Distance.Zero.Meters);
     }
 
     [TestMethod]

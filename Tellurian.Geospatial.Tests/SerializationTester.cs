@@ -1,5 +1,4 @@
-﻿using System.IO;
-using System.Runtime.Serialization;
+﻿using System.Runtime.Serialization;
 using System.Text.Json;
 
 namespace Tellurian.Geospatial.Tests;

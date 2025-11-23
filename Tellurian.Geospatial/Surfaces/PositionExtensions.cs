@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace Tellurian.Geospatial.Surfaces;
+﻿namespace Tellurian.Geospatial.Surfaces;
 
 /// <summary>
 /// Additional methods operating on a set of <see cref="Position">positions</see>.

@@ -11,7 +11,7 @@ public class SpeedTests
     [TestMethod]
     public void NegativeSpeedThrows()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Speed.FromMetersPerSecond(-1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Speed.FromMetersPerSecond(-1));
     }
 
     [TestMethod]

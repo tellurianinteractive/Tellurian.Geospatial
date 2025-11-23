@@ -11,13 +11,13 @@ public class LatitudeTests
     [TestMethod]
     public void Over90DegreesThrows()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Latitude.FromDegrees(90.1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Latitude.FromDegrees(90.1));
     }
 
     [TestMethod]
     public void UnderMinus90DegreesThrows()
     {
-        Assert.ThrowsException<ArgumentOutOfRangeException>(() => Latitude.FromDegrees(-90.1));
+        Assert.Throws<ArgumentOutOfRangeException>(() => Latitude.FromDegrees(-90.1));
     }
 
     [TestMethod]

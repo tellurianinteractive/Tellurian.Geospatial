@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Tellurian.Geospatial;
+﻿namespace Tellurian.Geospatial;
 
 public static class Constants
 {

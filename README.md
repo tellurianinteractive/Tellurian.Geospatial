@@ -2,11 +2,14 @@
 Strongly typed object model for geospatial calculations and transformations.
 All types are also serializable with the *DataContractSerializer* and *System.Text.Json*.
 
-Released under MIT license 2022-2024.
+Released under MIT license 2022-2026.
+### Release 2.7.0
+- **NET 10 support** while still supporting .NET 9.
 
 ### Release  2.6.0
 - **Stretch** changed from *record* to *struct*. This means that the package now is heap-allocation free.
 - **NET 9 support** while still supporting .NET 8.
+
 ### Breaking changes
 From release 2.5.0: 
 - **ToString()** changed for *angle*, *latitude*, *longitude*, *position*, *vector*, and *stretch*.
