@@ -1,0 +1,81 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            9.0.x
+            10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore Tellurian.Geospatial.slnx
+
+      - name: Build
+        run: dotnet build Tellurian.Geospatial.slnx --no-restore --configuration Release
+
+      - name: Test
+        run: dotnet test Tellurian.Geospatial.Tests/Tellurian.Geospatial.Tests.csproj --no-build --configuration Release --verbosity normal
+
+  publish:
+    needs: build-and-test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            9.0.x
+            10.0.x
+
+      - name: Extract version from Directory.Build.props
+        id: version
+        run: |
+          VERSION=$(grep -oP '(?<=<Version>)[^<]+' Directory.Build.props)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Extracted version: $VERSION"
+
+      - name: Check if version exists on NuGet
+        id: nuget-check
+        run: |
+          VERSION="${{ steps.version.outputs.version }}"
+          PACKAGE_ID="Tellurian.Geospatial"
+
+          # Query NuGet API for existing versions
+          RESPONSE=$(curl -s "https://api.nuget.org/v3-flatcontainer/${PACKAGE_ID,,}/index.json" || echo '{"versions":[]}')
+
+          if echo "$RESPONSE" | grep -q "\"$VERSION\""; then
+            echo "Version $VERSION already exists on NuGet"
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+          else
+            echo "Version $VERSION is new, will publish"
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Build for packaging
+        if: steps.nuget-check.outputs.should_publish == 'true'
+        run: dotnet build Tellurian.Geospatial/Tellurian.Geospatial.csproj --configuration Release
+
+      - name: Push to NuGet
+        if: steps.nuget-check.outputs.should_publish == 'true'
+        run: |
+          dotnet nuget push Tellurian.Geospatial/bin/Release/*.nupkg \
+            --api-key ${{ secrets.NUGET_API_KEY }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
