@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /b \"C:\\\\Utveckling\\\\Github\\\\Tellurian.Tracking\\\\Tellurian.Geospatial\\\\*.sln\")",
+      "Bash(dir:*)"
+    ]
+  }
+}

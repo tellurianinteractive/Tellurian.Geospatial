@@ -1,90 +1,140 @@
 # Tellurian.Geospatial
-Strongly typed object model for geospatial calculations and transformations.
-All types are also serializable with the *DataContractSerializer* and *System.Text.Json*.
 
-Released under MIT license 2022-2026.
-### Release 2.7.0
-- **NET 10 support** while still supporting .NET 9.
+[![NuGet](https://img.shields.io/nuget/v/Tellurian.Geospatial.svg)](https://www.nuget.org/packages/Tellurian.Geospatial/)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-### Release  2.6.0
-- **Stretch** changed from *record* to *struct*. This means that the package now is heap-allocation free.
-- **NET 9 support** while still supporting .NET 8.
+A strongly-typed, high-performance .NET library for geospatial calculations.
+**Zero heap allocations** - all types are value types optimized for tracking and real-time applications.
 
-### Breaking changes
-From release 2.5.0: 
-- **ToString()** changed for *angle*, *latitude*, *longitude*, *position*, *vector*, and *stretch*.
-See the source test project for expected output strings.
-- **Public constructors** removed for *angle*, *distance*, *latitude*, *longitude*, *position*, and *speed*, 
-as they was only intended for deserialization and this works without them. Use static factory methods instead.
-- **Equality and comparisions** for *angle*, *distance*, and *speed* now correctly considerer *compare tolerance*.
-- **Obsolete methods** are marked for future removal. Consider make the changes suggested.
+## Features
+- Calculate distances and bearings between coordinates
+- Track positions along routes with cross-track and on-track distance
+- Transform between geodetic (lat/lon) and planar grid coordinates (UTM, SWEREF99, RT90)
+- Define geofences with circular and polygonal surfaces
+- Full serialization support (System.Text.Json and DataContractSerializer)
 
-#### From release 2.4.0: 
-- Changed serialization property names for some types, which may cause serialization to break 
-when older version of this package is used in the 'other' end of the wire.
+## Installation
 
+```
+dotnet add package Tellurian.Geospatial
+```
 
-## Overview of functionality
-### Namespace *Tellurian.Geospatial*
-Types for basic calculations of dictances etc. and building blocks for more advanced spatial algorithms.
-* **Angle** representing 0 <= *degrees* < 360 and radians 0 <= *radians* < 2Π.
-* **Distance** representing zero or positive distances in meters and kilometers.
-* **Position** with **Latitude** and **Longitude** representing a two dimensional location on earth surface. The user must decide on which datum a position is expressed, for exampe WGS 84, ETRS 89 or similar. 
-* **Speed** representing a zero or positive speed in m/s and km/h.
-* **Stretch** between two **Position**s representing propertes for stretches on earth surface, ie. *distance*, *direction*, *on track distance* etc.
-* **Vector** represening a **Distance** with an **Angle**.
+## Quick Start
 
-Each of these objects has value safe initializers and useful methods for calculating distances, angles etc. 
+### Calculate distance and bearing between two positions
+```csharp
+var stockholm = Position.FromDegrees(59.3262, 17.8420);
+var london = Position.FromDegrees(51.5074, -0.1278);
 
-### Namespace *Tellurian.Geospatial.Surfaces* 
-Types for modelling surfaces. Added from release 2.1.0.
-* **CircularSurface** representing a *ReferencePosition* with a *Radius*.
-* **PolygonalSurface** representing a *ReferencePosition* sourrounded by a polygonal border.
+var stretch = Stretch.Between(stockholm, london);
 
-Surfaces has a *Includes(Position)* method that tells if a *Position* lies on or within the surface's border. 
-You can create your own by deriving from **Surface** base class.
+Console.WriteLine($"Distance: {stretch.Distance.Kilometers:F0} km");      // 1435 km
+Console.WriteLine($"Direction: {stretch.Direction.Degrees:F1}°");         // 236.5°
+Console.WriteLine($"Initial bearing: {stretch.InitialBearing.Degrees:F1}°"); // 227.5°
+```
 
-### Namespace *Tellurian.Geospatial.Transform*
-Types and methods for transforming between cartesian and planar coordinates.
-* **EarthEllipsoid** represents the form of the earth. There are a few preconfigured, see below. You can easy create other.
-* **MapProjection** represents how coordinates are mapped to the earth.  There are a few preconfigured, see below. You can easy create other.
-* **GridCoordinate** represents a planar coordinate.
-* **GaussKrügerTransformer** uses the objects above to transform between cartesian and planar coordinates.
+### Find destination from a starting point
+```csharp
+var start = Position.FromDegrees(58.0338, 11.7450);
+var bearing = Angle.FromDegrees(97);
+var distance = Distance.FromMeters(562);
 
-There are built-in *map projections* for planar coordinates:
-* **MapProjections.UTMxx**, where 'xx' is any of zone 32-35 used in Europe.
-* **MapProjections.Sweref99TM** (same as UTM33 but extended to cover Sweden)
-* **MapProjections.RT90** (older system used in Sweden).
+var destination = start.Destination(bearing, distance);
+// Position: 58.0332, 11.7545
+```
 
-There are built-in *ellipsoids*:
-* **Ellipsoids.WGS84** used for most GPS-devices. **SWEREF99** differs < 1 meter from WGS84.
-* **Ellipsoids.GRS80** used for many transformations to/from planar coordinates.
-* **Ellipsoids.Hayford1910** 
+### Check if a position is within a geofence
+```csharp
+var center = Position.FromDegrees(58.0724, 11.8233);
+var geofence = new CircularSurface(center, Distance.FromMeters(100));
 
-### Namespace *Tellurian.Geospatial.DistanceCalculators*
-The method for calculating distances between **Position**s is pluggable because applications have different requirements regarding  precision and speed of calculation. 
-The following **DistanceCalculator** is included:
-* **HaversineDistanceCalculator** is a fast calculation that is suitable for distances down to decimeters, suitable for tracking of movable objects. 
-This is also the default **DistanceCalculator**.
+var vehicle = Position.FromDegrees(58.0725, 11.8235);
+if (geofence.Includes(vehicle))
+{
+    Console.WriteLine("Vehicle is inside the geofence");
+}
+```
 
-You can write additional distance calculators by implementing the *IDistanceCalculator* interface and use it to calculate distances of **Stretch**es.
+### Track position along a route
+```csharp
+var routeStart = Position.FromDegrees(58.0338, 11.7450);
+var routeEnd = Position.FromDegrees(58.0332, 11.7545);
+var route = Stretch.Between(routeStart, routeEnd);
 
-## Benchmarks
-A **Tellurian.Geospatial.Benchmarks** project is available in the source code repository as part of
-the solution for *Tellurian.Geospatial*.
-This project can be used to analyse performance issues with this package.
-If you add benchmarks, please also make a pull request to provide these to all of us.
+var currentPosition = Position.FromDegrees(58.0333, 11.7502);
+
+var crossTrack = route.CrossTrackDistance(currentPosition);  // Distance from route
+var onTrack = route.OnTrackDistance(currentPosition);        // Progress along route
+
+Console.WriteLine($"Off track: {crossTrack.Meters:F1} m");   // 15.9 m
+Console.WriteLine($"Progress: {onTrack.Meters:F0} m");       // 311 m
+```
+
+### Transform between coordinate systems
+```csharp
+// Convert GPS coordinates to Swedish grid (SWEREF99 TM)
+var gpsPosition = Position.FromDegrees(59.3262, 17.8420);
+var gridCoord = GaussKreugerTransformer.ToGridCoordinate(gpsPosition, MapProjections.Sweref99TM);
+
+Console.WriteLine($"N: {gridCoord.X}, E: {gridCoord.Y}");
+
+// Convert back to GPS coordinates
+var backToGps = GaussKreugerTransformer.ToPosition(gridCoord, MapProjections.Sweref99TM);
+```
+
+## Core Types
+
+| Type | Description |
+|------|-------------|
+| `Position` | Latitude/Longitude coordinate |
+| `Stretch` | Segment between two positions with distance, direction, and bearing calculations |
+| `Distance` | Value in meters/kilometers with comparison tolerance |
+| `Angle` | Value in degrees/radians (0-360°) |
+| `Speed` | Value in m/s or km/h |
+| `Vector` | Distance with direction |
+
+## Surfaces (Geofencing)
+
+| Type | Description |
+|------|-------------|
+| `CircularSurface` | Circle defined by center position and radius |
+| `PolygonalSurface` | Polygon defined by border positions |
+
+Both implement `Includes(Position)` to check if a point is inside the boundary.
+
+## Coordinate Transformation
+
+**Map Projections:** UTM zones 32-35, Sweref99TM, RT90
+
+**Ellipsoids:** WGS84, GRS80, Hayford1910
+
+## Pluggable Distance Calculation
+
+The default `HaversineDistanceCalculator` is optimized for tracking applications (accurate to decimeters).
+Implement `IDistanceCalculator` for custom algorithms.
+
+## Requirements
+
+- .NET 9.0 or .NET 10.0
 
 ## References
-This implementation is inspired by part of *Latitude/longitude spherical geodesy tools*  
-MIT Licence (c) Chris Veness 2002-2022 
-https://www.movable-type.co.uk/scripts/latlong.html  
-https://www.movable-type.co.uk/scripts/geodesy/docs/module-latlon-spherical.html
-https://github.com/chrisveness/geodesy
 
-Implementation of the **GaussKrügerTransformer** is based on formulas from Swedish Land Survey (Lantmäteriet)  
-https://www.lantmateriet.se/sv/geodata/gps-geodesi-och-swepos/Om-geodesi/Formelsamling/
+Inspired by [Latitude/longitude spherical geodesy tools](https://www.movable-type.co.uk/scripts/latlong.html) by Chris Veness.
 
+Coordinate transformation based on formulas from [Swedish Land Survey (Lantmäteriet)](https://www.lantmateriet.se/sv/geodata/gps-geodesi-och-swepos/Om-geodesi/Formelsamling/).
 
+## License
 
+MIT License - see [LICENSE](LICENSE) for details.
 
+---
+
+## Release Notes
+
+### 2.7.0
+- .NET 10 support (while still supporting .NET 9)
+
+### Breaking Changes (2.5.0+)
+- `ToString()` output changed for Angle, Latitude, Longitude, Position, Vector, and Stretch
+- Public constructors removed - use static factory methods (e.g., `Position.FromDegrees()`)
+- Equality comparisons now respect comparison tolerance
