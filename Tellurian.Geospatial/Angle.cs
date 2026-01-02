@@ -299,6 +299,31 @@ public readonly struct Angle : IEquatable<Angle>, IComparable<Angle>
     }
 
     /// <summary>
+    /// Determines if this angle is between two other angles, handling wrap-around at 0°/360°.
+    /// </summary>
+    /// <param name="lower">The lower bound of the range.</param>
+    /// <param name="upper">The upper bound of the range.</param>
+    /// <returns>
+    /// True if this angle is within the range [lower, upper], handling the case where
+    /// the range wraps around 0° (e.g., 315° to 45° includes 350°, 0°, and 30°).
+    /// Returns false if any angle is undefined.
+    /// </returns>
+    public bool IsBetween(in Angle lower, in Angle upper)
+    {
+        if (IsUndefined || lower.IsUndefined || upper.IsUndefined) return false;
+        if (lower <= upper)
+        {
+            // Normal case: range doesn't wrap (e.g., 60° to 120°)
+            return this >= lower && this <= upper;
+        }
+        else
+        {
+            // Wrap-around case: range crosses 0° (e.g., 315° to 45°)
+            return this >= lower || this <= upper;
+        }
+    }
+
+    /// <summary>
     /// Default formatted value for an <see cref="Angle"/>.
     /// </summary>
     /// <returns>"Undefined" or degrees with two decimals and unit symbol °.</returns>

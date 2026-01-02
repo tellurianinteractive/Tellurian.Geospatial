@@ -168,4 +168,131 @@ public class AngleTests
         Assert.AreEqual(Angle.FromDegrees(180), Angle.FromDegrees(200).Min(Angle.FromDegrees(20)));
         Assert.AreEqual(Angle.FromDegrees(180), Angle.FromDegrees(20).Min(Angle.FromDegrees(200)));
     }
+
+    #region IsBetween tests
+
+    [TestMethod]
+    public void IsBetween_NormalRange_AngleInside()
+    {
+        // 90° is between 60° and 120°
+        Assert.IsTrue(Angle.FromDegrees(90).IsBetween(Angle.FromDegrees(60), Angle.FromDegrees(120)));
+    }
+
+    [TestMethod]
+    public void IsBetween_NormalRange_AngleAtLowerBound()
+    {
+        // 60° is at the lower bound of [60°, 120°]
+        Assert.IsTrue(Angle.FromDegrees(60).IsBetween(Angle.FromDegrees(60), Angle.FromDegrees(120)));
+    }
+
+    [TestMethod]
+    public void IsBetween_NormalRange_AngleAtUpperBound()
+    {
+        // 120° is at the upper bound of [60°, 120°]
+        Assert.IsTrue(Angle.FromDegrees(120).IsBetween(Angle.FromDegrees(60), Angle.FromDegrees(120)));
+    }
+
+    [TestMethod]
+    public void IsBetween_NormalRange_AngleOutsideBelow()
+    {
+        // 50° is below the range [60°, 120°]
+        Assert.IsFalse(Angle.FromDegrees(50).IsBetween(Angle.FromDegrees(60), Angle.FromDegrees(120)));
+    }
+
+    [TestMethod]
+    public void IsBetween_NormalRange_AngleOutsideAbove()
+    {
+        // 130° is above the range [60°, 120°]
+        Assert.IsFalse(Angle.FromDegrees(130).IsBetween(Angle.FromDegrees(60), Angle.FromDegrees(120)));
+    }
+
+    [TestMethod]
+    public void IsBetween_WrapAroundRange_AngleInsideAboveLower()
+    {
+        // 350° is in the range [315°, 45°] (wrap-around)
+        Assert.IsTrue(Angle.FromDegrees(350).IsBetween(Angle.FromDegrees(315), Angle.FromDegrees(45)));
+    }
+
+    [TestMethod]
+    public void IsBetween_WrapAroundRange_AngleInsideBelowUpper()
+    {
+        // 30° is in the range [315°, 45°] (wrap-around)
+        Assert.IsTrue(Angle.FromDegrees(30).IsBetween(Angle.FromDegrees(315), Angle.FromDegrees(45)));
+    }
+
+    [TestMethod]
+    public void IsBetween_WrapAroundRange_AngleAtZero()
+    {
+        // 0° is in the range [315°, 45°] (wrap-around)
+        Assert.IsTrue(Angle.FromDegrees(0).IsBetween(Angle.FromDegrees(315), Angle.FromDegrees(45)));
+    }
+
+    [TestMethod]
+    public void IsBetween_WrapAroundRange_AngleAtLowerBound()
+    {
+        // 315° is at the lower bound of [315°, 45°]
+        Assert.IsTrue(Angle.FromDegrees(315).IsBetween(Angle.FromDegrees(315), Angle.FromDegrees(45)));
+    }
+
+    [TestMethod]
+    public void IsBetween_WrapAroundRange_AngleAtUpperBound()
+    {
+        // 45° is at the upper bound of [315°, 45°]
+        Assert.IsTrue(Angle.FromDegrees(45).IsBetween(Angle.FromDegrees(315), Angle.FromDegrees(45)));
+    }
+
+    [TestMethod]
+    public void IsBetween_WrapAroundRange_AngleOutside()
+    {
+        // 180° is outside the range [315°, 45°]
+        Assert.IsFalse(Angle.FromDegrees(180).IsBetween(Angle.FromDegrees(315), Angle.FromDegrees(45)));
+    }
+
+    [TestMethod]
+    public void IsBetween_WrapAroundRange_AngleJustOutsideAboveUpper()
+    {
+        // 50° is just outside the range [315°, 45°]
+        Assert.IsFalse(Angle.FromDegrees(50).IsBetween(Angle.FromDegrees(315), Angle.FromDegrees(45)));
+    }
+
+    [TestMethod]
+    public void IsBetween_WrapAroundRange_AngleJustOutsideBelowLower()
+    {
+        // 310° is just outside the range [315°, 45°]
+        Assert.IsFalse(Angle.FromDegrees(310).IsBetween(Angle.FromDegrees(315), Angle.FromDegrees(45)));
+    }
+
+    [TestMethod]
+    public void IsBetween_SameAngles_AngleMatches()
+    {
+        // 90° is between [90°, 90°] (single point)
+        Assert.IsTrue(Angle.FromDegrees(90).IsBetween(Angle.FromDegrees(90), Angle.FromDegrees(90)));
+    }
+
+    [TestMethod]
+    public void IsBetween_SameAngles_AngleDoesNotMatch()
+    {
+        // 91° is not between [90°, 90°]
+        Assert.IsFalse(Angle.FromDegrees(91).IsBetween(Angle.FromDegrees(90), Angle.FromDegrees(90)));
+    }
+
+    [TestMethod]
+    public void IsBetween_UndefinedAngle_ReturnsFalse()
+    {
+        Assert.IsFalse(Angle.Undefined.IsBetween(Angle.FromDegrees(0), Angle.FromDegrees(90)));
+    }
+
+    [TestMethod]
+    public void IsBetween_UndefinedLowerBound_ReturnsFalse()
+    {
+        Assert.IsFalse(Angle.FromDegrees(45).IsBetween(Angle.Undefined, Angle.FromDegrees(90)));
+    }
+
+    [TestMethod]
+    public void IsBetween_UndefinedUpperBound_ReturnsFalse()
+    {
+        Assert.IsFalse(Angle.FromDegrees(45).IsBetween(Angle.FromDegrees(0), Angle.Undefined));
+    }
+
+    #endregion
 }

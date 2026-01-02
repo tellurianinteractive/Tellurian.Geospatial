@@ -9,7 +9,7 @@
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 		<Description>Object model for geospatial calculations and transformations.</Description>
 		<PackageReleaseNotes>
-			See README.
+			Angle.IsBetween() added. See README.
 		</PackageReleaseNotes>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<RepositoryUrl>https://github.com/tellurianinteractive/Tellurian.Geospatial.git</RepositoryUrl>
